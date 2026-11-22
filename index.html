@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#11182a">
+<meta name="description" content="Triple Rook Chess: a new way to play. Plan your moves, reveal them simultaneously, and protect your three original rooks.">
+<title>Triple Rook Chess ♜</title>
+<style>
+:root{--bg:#0e1524;--surface:#172338;--surface2:#23324a;--line:#344560;--ink:#f7f5ed;--muted:#b5c0d3;--gold:#f4c568;--mint:#8de0bd;--red:#f08c91;--light:#eee2cc;--dark:#75968e;--square-size:64px}
+*{box-sizing:border-box}html{min-height:100%;background:var(--bg)}body{margin:0;min-height:100vh;min-height:100dvh;color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:radial-gradient(ellipse at 54% -8%,#33415b 0,transparent 49%),var(--bg)}button{font:inherit;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible{outline:3px solid var(--gold);outline-offset:4px}button,select{-webkit-tap-highlight-color:transparent}h1,h2,h3,p{margin-top:0}h1{font-size:clamp(2.35rem,6vw,3.75rem);line-height:1.06;letter-spacing:-.045em;margin-bottom:14px}h2{font-size:1.3rem}h3{font-size:1rem}p{line-height:1.55}.eyebrow{color:var(--gold);font-size:.78rem;font-weight:850;letter-spacing:.14em;text-transform:uppercase}.muted{color:var(--muted)}.small{font-size:.82rem}.strong{font-weight:850}.container{width:min(1100px,100% - 28px);margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 0 24px}.brand{display:flex;gap:10px;align-items:center;font-weight:900;letter-spacing:-.02em;font-size:1.12rem}.brand-mark{height:38px;width:38px;border-radius:12px;background:var(--gold);display:grid;place-items:center;color:#141e2e;font-size:25px}.top-actions{display:flex;align-items:center;gap:8px}.pill-btn{border:1px solid var(--line);background:#23314a;color:var(--ink);border-radius:999px;padding:9px 14px;font-weight:700}.btn{border:none;border-radius:13px;background:var(--gold);color:#152034;padding:13px 17px;font-size:.96rem;font-weight:850;box-shadow:0 5px 0 #ad8544;transition:transform .12s ease,box-shadow .12s ease}.btn:active:not(:disabled){transform:translateY(3px);box-shadow:0 2px 0 #ad8544}.btn.secondary{background:#314660;color:var(--ink);box-shadow:none;border:1px solid #52617b}.btn.green{background:var(--mint);box-shadow:0 5px 0 #3f9571}.btn.full{width:100%}.btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--line);box-shadow:none}.board-area{min-width:0}.menu{max-width:900px;margin:12px auto 60px}.hero{padding:22px 7px 20px;max-width:660px}.hero h1 em{font-style:normal;color:var(--gold)}.hero p{font-size:1.06rem;color:var(--muted)}.mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.mode{padding:23px;text-align:left;background:linear-gradient(150deg,#26364d,#192538);color:var(--ink);border:1px solid #40516d;border-radius:20px;min-height:215px;transition:transform .18s,border-color .18s}.mode:hover{transform:translateY(-4px);border-color:var(--gold)}.mode .emblem{font-size:2.6rem;margin-bottom:15px}.mode h2{font-size:1.34rem;margin-bottom:6px}.mode p{font-size:.89rem;margin-bottom:0;color:var(--muted)}.mini-rules{margin-top:20px;padding:17px 20px;border-radius:16px;background:#142034;border:1px solid #304158;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.rule-chip{display:flex;align-items:center;gap:9px;font-weight:650;font-size:.82rem}.rule-chip b{font-size:1.3rem;color:var(--gold)}.game-layout{display:grid;grid-template-columns:minmax(0,640px) minmax(290px,1fr);gap:20px;align-items:start}.board-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:11px}.board-top .turn-info{color:var(--gold);font-weight:850}.board-shell{background:#18263a;border:1px solid #34455d;padding:10px;border-radius:17px;box-shadow:0 20px 65px #050a1770}.board{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));width:100%;aspect-ratio:1/1;overflow:hidden;border-radius:8px;border:2px solid #d1b990;box-shadow:0 6px 18px #070c1944}.sq{border:0;border-radius:0;outline-offset:-2px;position:relative;display:flex;justify-content:center;align-items:center;min-width:0;width:100%;aspect-ratio:1/1;padding:0;background:var(--light)}.sq.dark{background:var(--dark)}.sq.selected{box-shadow:inset 0 0 0 4px #e8b84c;z-index:1}.sq.last-from:not(.selected){box-shadow:inset 0 0 0 3px #ffffff60}.sq.last-to:not(.selected){box-shadow:inset 0 0 0 4px #efc76a99}.sq .piece{font-family:"Segoe UI Symbol","Apple Symbols","Noto Sans Symbols 2","DejaVu Sans",serif;font-size:clamp(27px,5.5vw,55px);line-height:1;position:relative;z-index:1;filter:drop-shadow(0 2px 1px #1010106b);user-select:none}.piece.W{color:#fffbf3;-webkit-text-stroke:1.05px #2a2f39;text-shadow:0 1px 1px #333}.piece.B{color:#19283a;-webkit-text-stroke:.35px #f4f2e0;text-shadow:0 1px 1px #e0e1dc}.sq.royal .piece{filter:drop-shadow(0 2px 2px #f2c666)}.sq.possible:after{position:absolute;content:"";height:23%;width:23%;border-radius:50%;background:#183e40a3;z-index:2;pointer-events:none}.sq.can-capture:after{position:absolute;content:"";inset:6px;border:4px solid #c65355c9;border-radius:50%;z-index:2;pointer-events:none}.sq .coord{position:absolute;font-size:clamp(8px,1.25vw,11px);font-weight:850;opacity:.75;color:#1b342d;z-index:3;pointer-events:none}.coord.file{right:3px;bottom:2px}.coord.rank{left:3px;top:2px}.sq.light .coord{color:#7d5d37}.board-legend{display:flex;justify-content:space-between;gap:10px;padding:13px 2px 1px;font-size:.8rem;color:var(--muted)}.board-legend span{display:flex;align-items:center;gap:6px}.key-dot{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--mint)}.side{display:flex;flex-direction:column;gap:12px}.panel{border:1px solid var(--line);background:#1b293f;padding:16px;border-radius:17px}.panel h2{margin-bottom:13px;font-size:1rem}.players{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.player-card{padding:12px;border-radius:13px;background:#263650;border:1px solid #49617c}.player-card.current{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}.player-card h3{font-size:.92rem;margin-bottom:7px;display:flex;justify-content:space-between;gap:6px}.player-card small{color:var(--muted)}.lives{display:flex;gap:4px;font-size:clamp(21px,3vw,30px);height:33px;align-items:center}.life{font-family:"Segoe UI Symbol","DejaVu Sans",serif}.life.lost{opacity:.19;filter:grayscale(1);text-decoration:line-through}.life.crowned{color:var(--gold)}.status{background:#101b2d;border-radius:14px;padding:15px;margin-top:12px;min-height:88px}.status b{color:var(--gold);display:block;margin-bottom:4px}.status p{font-size:.88rem;color:#e0e6f1;margin:0}.selection{min-height:49px;font-size:.85rem;line-height:1.5;color:var(--muted);padding:10px 0}.action-stack{display:grid;gap:10px}.tiny-actions{display:flex;gap:8px}.tiny-actions>*{flex:1}.round-card{background:#132034;border:1px solid #344860;border-radius:13px;padding:13px;font-size:.87rem}.round-card .heading{font-weight:900;color:var(--gold);margin-bottom:10px}.result-rows{display:grid;gap:7px}.result-row{display:flex;justify-content:space-between;gap:12px}.result-row span:last-child{font-weight:800}.event{border-left:3px solid var(--mint);padding:4px 8px;color:#e2e7f0;font-size:.8rem;margin-top:7px;background:#26364a}.footer-note{text-align:center;padding:20px 0 16px;color:#9ca9c0;font-size:.77rem}.veil{position:fixed;inset:0;background:#0c1524;z-index:20;display:grid;place-items:center;padding:22px;overflow-y:auto}.veil[hidden],[hidden]{display:none!important}.dialog{background:linear-gradient(150deg,#2a3d58,#1b293e);border:1px solid #53647d;border-radius:23px;box-shadow:0 20px 90px #0008;padding:27px;max-width:430px;width:100%;text-align:center}.dialog .big{font-size:3.1rem;margin-bottom:5px}.dialog h2{font-size:1.75rem;line-height:1.18;margin-bottom:10px}.dialog p{color:#cfdaec;font-size:.93rem}.dialog .btn{width:100%;margin-top:9px}.rules{max-height:min(75vh,630px);overflow:auto;text-align:left}.rules h2{text-align:left}.rules li{color:#d6e1f0;margin-bottom:10px;line-height:1.5}.rules ol{padding-left:22px}.rules .close{width:100%;margin-top:15px}.promotions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.promo-btn{font-family:"Segoe UI Symbol","DejaVu Sans",serif;font-size:2.2rem;line-height:1;background:#405674;border:1px solid #72849e;color:#fff;border-radius:12px;padding:17px 0}.mode-name{display:inline-flex;gap:6px;align-items:center;background:#263a50;padding:5px 11px;border-radius:999px;color:var(--mint);font-size:.75rem;font-weight:850}.mobile-tip{display:none}
+@media(max-width:780px){.game-layout{grid-template-columns:1fr;gap:14px}.game-layout .side{display:grid;grid-template-columns:1fr 1fr;gap:10px}.side .controls{grid-column:1/-1;order:-1}.side .round-info{grid-column:1/-1}.board-top{font-size:.86rem}.board-shell{padding:7px}.sq .piece{font-size:clamp(28px,8.4vw,56px)}.mobile-tip{display:inline}.side .panel{padding:13px}.footer-note{padding-bottom:28px}}
+@media(max-width:480px){.top{padding:14px 0 20px}.brand{font-size:1rem}.brand-mark{height:35px;width:35px}.pill-btn{font-size:.78rem;padding:8px 11px}.mode-grid{grid-template-columns:1fr;gap:10px}.mode{min-height:unset;display:grid;grid-template-columns:50px 1fr;column-gap:12px;padding:17px}.mode .emblem{grid-row:span 2;font-size:2.2rem;margin:0}.mode h2{margin-top:0;font-size:1.09rem}.mode p{grid-column:2;font-size:.8rem}.mini-rules{grid-template-columns:1fr;gap:10px}.hero{padding:8px 4px}.hero h1{font-size:2.7rem}.game-layout .side{display:flex}.board-shell{padding:5px;border-radius:12px}.sq .piece{font-size:clamp(25px,9vw,42px)}.sq.can-capture:after{inset:3px;border-width:3px}.sq.selected{box-shadow:inset 0 0 0 3px #e8b84c}.board-legend{font-size:.7rem}.players{gap:8px}.player-card{padding:9px}.lives{font-size:25px}.dialog{padding:23px}}
+@media(prefers-reduced-motion:reduce){*{transition-duration:0s!important;animation-duration:0s!important}}
+
+/* Noah's color update: distinct ice-blue and coral-orange teams. */
+:root{--side-blue:#82dcff;--side-coral:#ff927f}
+.sq .piece{display:grid;place-items:center;width:82%;height:82%;border-radius:50%;border:2px solid transparent;font-size:clamp(24px,4.4vw,46px);line-height:1;box-shadow:0 3px 4px #10192f70,inset 0 1px 0 #ffffff66;filter:none}
+.sq .piece.W{background:linear-gradient(145deg,#e3faff,#7ed2f5);color:#104667;-webkit-text-stroke:.25px #104667;border-color:#3186aa;text-shadow:none}
+.sq .piece.B{background:linear-gradient(145deg,#ffc5a6,#ed755f);color:#5d2332;-webkit-text-stroke:.25px #5d2332;border-color:#ba5145;text-shadow:none}
+.sq.royal .piece{filter:none;box-shadow:0 0 0 2px #f4c568,0 3px 5px #10192f80}
+.player-card:first-child{border-color:#487e9c;background:#18374e}
+.player-card:last-child{border-color:#a96960;background:#422e40}
+.player-card:first-child h3{color:#b3edff}
+.player-card:last-child h3{color:#ffc1ac}
+.life.W{color:var(--side-blue)}.life.B{color:var(--side-coral)}
+.life.crowned{text-shadow:0 0 6px #f4c568}
+@media(max-width:480px){.sq .piece{width:86%;height:86%;font-size:clamp(22px,7.1vw,36px);border-width:1.5px}}
+</style>
+</head>
+<body>
+<div class="container">
+<header class="top">
+  <div class="brand"><div class="brand-mark" aria-hidden="true">♜</div><span>Triple Rook Chess</span></div>
+  <div class="top-actions"><button class="pill-btn" id="rulesButton">? Rules</button><button class="pill-btn" id="homeButton" hidden>⌂ Menu</button></div>
+</header>
+<main>
+ <section class="menu" id="menu">
+   <div class="hero"><div class="eyebrow">A new kind of chess</div><h1>Three rooks.<br><em>One big twist.</em></h1><p>Your king is the third rook. Plan your moves in secret, reveal them together, and capture all three of your opponent’s original rooks to win.</p></div>
+   <div class="mode-grid">
+    <button class="mode" id="soloButton"><div class="emblem">🤖</div><h2>Play the computer</h2><p>Try your game right now. You play White; the computer plans Black’s moves.</p></button>
+    <button class="mode" id="friendButton"><div class="emblem">♜♟</div><h2>Two players</h2><p>Pass one phone or computer between players. Each move stays secret until the reveal.</p></button>
+   </div>
+   <div class="mini-rules"><div class="rule-chip"><b>♚</b> King moves like a rook</div><div class="rule-chip"><b>↔</b> Moves happen together</div><div class="rule-chip"><b>3</b> Capture all three to win</div></div>
+ </section>
+ <section id="game" hidden>
+   <div class="game-layout">
+    <div class="board-area">
+      <div class="board-top"><span id="modeBadge" class="mode-name">🤖 VS COMPUTER</span><span id="roundTag" class="turn-info">Round 1</span></div>
+      <div class="board-shell"><div id="board" class="board" role="group" aria-label="Triple Rook Chess board"></div><div class="board-legend"><span><i class="key-dot"></i> Tap a piece, then a highlighted square</span><span id="boardPerspective">White at bottom</span></div></div>
+    </div>
+    <aside class="side">
+      <section class="panel controls">
+        <h2>Three lives each</h2><div class="players">
+          <div class="player-card" id="whiteCard"><h3>🔵 White <small id="whiteLifeCount">3 / 3</small></h3><div class="lives" id="whiteLives"></div></div>
+          <div class="player-card" id="blackCard"><h3>🔴 Black <small id="blackLifeCount">3 / 3</small></h3><div class="lives" id="blackLives"></div></div>
+        </div>
+        <div class="status" aria-live="polite"><b id="phaseTitle">White, choose your move</b><p id="phaseHelp">Tap one of your pieces, then pick a highlighted square.</p></div>
+        <div class="selection" id="selectionText" aria-live="polite">Your move is not selected yet.</div>
+        <div class="action-stack"><button id="lockButton" class="btn full" disabled>Lock in move</button><button id="revealButton" class="btn green full" hidden>Reveal both moves →</button><div class="tiny-actions"><button class="btn secondary" id="passButton">Pass this round</button><button class="btn ghost" id="changeButton" disabled>Change move</button></div></div>
+      </section>
+      <section class="panel round-info"><h2>Latest round</h2><div class="round-card" id="roundReport"><div class="muted small">No moves revealed yet. The board starts in the standard chess setup.</div></div></section>
+      <section class="panel"><h2>Game rules</h2><p class="muted small" style="margin-bottom:0">The king <b>moves only like a rook</b>, and capturing it does not cause checkmate. You win only after all three original rooks are gone. Both players choose from the same board position. If two pieces capture each other at once, both are lost.</p></section>
+    </aside>
+   </div>
+   <div class="footer-note">Made for playing, testing, and improving your own game idea. ✨</div>
+ </section>
+</main>
+</div>
+<div class="veil" id="handoff" hidden role="dialog" aria-modal="true" aria-labelledby="handoffTitle"><div class="dialog"><div class="big">🔒</div><h2 id="handoffTitle">Pass the device to Black</h2><p id="handoffText">White’s move is locked and hidden. Give the device to the Black player, then tap the button below.</p><button class="btn" id="handoffReady">I'm playing Black →</button></div></div>
+<div class="veil" id="promotionDialog" hidden role="dialog" aria-modal="true" aria-labelledby="promoTitle"><div class="dialog"><div class="big">♙</div><h2 id="promoTitle">Promote your pawn</h2><p>Choose a new piece. A promoted rook does not add a new life.</p><div id="promotionChoices" class="promotions"></div><button class="btn secondary" id="cancelPromotion">Cancel</button></div></div>
+<div class="veil" id="winnerDialog" hidden role="dialog" aria-modal="true" aria-labelledby="winnerTitle"><div class="dialog"><div class="big" id="winIcon">🏆</div><h2 id="winnerTitle">White wins!</h2><p id="winnerDetail">All three starting rooks are gone.</p><button class="btn" id="againButton">Play again</button><button class="btn secondary" id="winnerMenuButton">Choose a different mode</button></div></div>
+<div class="veil" id="rulesDialog" hidden role="dialog" aria-modal="true" aria-labelledby="rulesTitle"><div class="dialog rules"><div class="eyebrow">The official game rules (first version)</div><h2 id="rulesTitle">How Triple Rook Chess works</h2><ol><li>Start with a normal 8×8 chessboard and all the usual pieces.</li><li>The <b>king is the third rook</b>: it moves any number of squares horizontally or vertically, like a rook. The other two rooks also move normally.</li><li>There is <b>no check or checkmate</b>. The king may be captured like any other piece, and that only removes one of your three lives.</li><li>Both players secretly select one legal move from the <b>same starting position</b>. Then both moves happen at once. You can also pass.</li><li>If both pieces move onto <b>the same destination square</b>, both are removed. If they <b>try to capture each other by swapping squares</b>, both are also removed. Otherwise, a piece that moves away from an attacked square escapes.</li><li>The player who loses all three <b>original rooks</b> (the king-rook and two normal rooks) loses. If both players lose their last rook together, it’s a draw.</li><li>Pawns can promote, but promoted rooks do not create extra lives. Castling and en passant are not used. Three rounds of both players passing results in a draw.</li></ol><button class="btn close" id="closeRules">Got it!</button></div></div>
+<script>
+'use strict';
+// Each side has exactly three ORIGINAL rook lives. Promoted rooks never gain a life ID.
+const LETTERS='abcdefgh';
+const PIECES={W:{p:'♙',r:'♖',n:'♘',b:'♗',q:'♕',k:'♔'},B:{p:'♟',r:'♜',n:'♞',b:'♝',q:'♛',k:'♚'}};
+const NAMES={p:'Pawn',r:'Rook',n:'Knight',b:'Bishop',q:'Queen',k:'Crown rook'};
+const $=id=>document.getElementById(id);
+const at=(r,c)=>r>=0&&r<8&&c>=0&&c<8;
+const squareName=(r,c)=>LETTERS[c]+(8-r);
+const same=(a,b)=>!!a&&!!b&&a.r===b.r&&a.c===b.c;
+const other=s=>s==='W'?'B':'W';
+const rowHome={W:7,B:0};
+const makePiece=(side,type,life=null)=>({side,type,life});
+function initialBoard(){
+ const board=Array.from({length:8},()=>Array(8).fill(null));
+ const back=['r','n','b','q','k','b','n','r'];
+ for(let c=0;c<8;c++){
+  const life=c===0?'left':c===7?'right':c===4?'crown':null;
+  board[0][c]=makePiece('B',back[c],life);
+  board[1][c]=makePiece('B','p');
+  board[6][c]=makePiece('W','p');
+  board[7][c]=makePiece('W',back[c],life);
+ }
+ return board;
+}
+function movesFor(board,r,c){
+ const p=board[r][c];if(!p)return [];
+ const {side}=p,type=p.type,out=[];
+ const add=(rr,cc)=>{if(!at(rr,cc))return false;const there=board[rr][cc];if(there&&there.side===side)return false;out.push({from:{r,c},to:{r:rr,c:cc}});return !there};
+ if(type==='p'){
+  const d=side==='W'?-1:1,home=side==='W'?6:1;
+  if(at(r+d,c)&&!board[r+d][c]){
+   out.push({from:{r,c},to:{r:r+d,c}});
+   if(r===home&&!board[r+2*d][c])out.push({from:{r,c},to:{r:r+2*d,c}});
+  }
+  for(const dc of [-1,1])if(at(r+d,c+dc)&&board[r+d][c+dc]&&board[r+d][c+dc].side!==side)out.push({from:{r,c},to:{r:r+d,c:c+dc}});
+  return out;
+ }
+ if(type==='n'){
+  for(const [dr,dc] of [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]])add(r+dr,c+dc);
+  return out;
+ }
+ let directions=[];
+ if(type==='r'||type==='k'||type==='q')directions.push([-1,0],[1,0],[0,-1],[0,1]);
+ if(type==='b'||type==='q')directions.push([-1,-1],[-1,1],[1,-1],[1,1]);
+ for(const [dr,dc] of directions){let rr=r+dr,cc=c+dc;while(at(rr,cc)){if(!add(rr,cc))break;rr+=dr;cc+=dc}}
+ return out;
+}
+function allMoves(board,side){const out=[];for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(board[r][c]?.side===side)out.push(...movesFor(board,r,c));return out}
+function alive(board,side){const out=new Set();for(const row of board)for(const p of row)if(p?.side===side&&p.life)out.add(p.life);return out}
+function formatMove(move,piece){if(move?.pass)return 'Pass';const sep=' → ';return (piece?NAMES[piece.type]+' ':'')+squareName(move.from.r,move.from.c)+sep+squareName(move.to.r,move.to.c)+(move.promotion?' = '+NAMES[move.promotion]:'')}
+function chooseComputer(board){
+ const moves=allMoves(board,'B');if(!moves.length)return {pass:true};
+ const enemy=allMoves(board,'W');const attacked=new Set(enemy.filter(m=>{const from=board[m.from.r][m.from.c];return from.type!=='p'||m.from.c!==m.to.c}).map(m=>squareName(m.to.r,m.to.c)));
+ const scored=moves.map(m=>{
+  const piece=board[m.from.r][m.from.c],target=board[m.to.r][m.to.c];let value=Math.random()*3.5;
+  if(target)value+=target.life?50:({q:17,r:10,b:7,n:7,p:3,k:50}[target.type]||5);
+  if(piece.type==='p')value+=1.0+(m.to.r-m.from.r)*0.6+(m.to.r===7?19:0);
+  if(piece.type==='n'||piece.type==='b')value+=1.1;
+  if(piece.life)value-=.7;
+  const central=3.5-(Math.abs(m.to.c-3.5)+Math.abs(m.to.r-3.5))/2;
+  value+=central*.7;
+  if(attacked.has(squareName(m.to.r,m.to.c)))value-=piece.life?15:piece.type==='q'?8:2;
+  // Prefer advancing towards White and building threats when there is no immediate capture.
+  value+=(m.to.r-m.from.r)*.15;
+  return {m,value};
+ });
+ scored.sort((a,b)=>b.value-a.value);
+ const near=scored.filter(x=>x.value>=scored[0].value-2.5).slice(0,7);
+ const selected=near[Math.floor(Math.random()*near.length)].m;
+ const piece=board[selected.from.r][selected.from.c];
+ if(piece.type==='p'&&selected.to.r===7)return {...selected,promotion:'q'};
+ return selected;
+}
+function resolveRound(board,wMove,bMove){
+ const old=board,updated=board.map(row=>row.slice());
+ const active=[];const captures=[];const events=[];
+ for(const [side,m] of [['W',wMove],['B',bMove]]){
+  if(m&&!m.pass)active.push({side,move:m,piece:old[m.from.r][m.from.c]});
+ }
+ for(const entry of active){updated[entry.move.from.r][entry.move.from.c]=null}
+ let collision=false;
+ const sameDestination=active.length===2&&same(active[0].move.to,active[1].move.to);
+ const mutualCapture=active.length===2&&same(active[0].move.to,active[1].move.from)&&same(active[1].move.to,active[0].move.from);
+ if(sameDestination||mutualCapture){
+  collision=true;
+  for(const ent of active){captures.push({victim:ent.piece,by:mutualCapture?'mutual-capture':'collision'})}
+  events.push(mutualCapture?'Mutual capture! Both moving pieces captured each other, so both were lost.':'Both players chose '+squareName(active[0].move.to.r,active[0].move.to.c)+'. Both moving pieces were lost!');
+ }else{
+  for(const ent of active){const {r,c}=ent.move.to;const victim=updated[r][c];if(victim&&victim.side!==ent.side){captures.push({victim,by:ent.side});updated[r][c]=null}}
+  for(const ent of active){const {r,c}=ent.move.to;let moved=ent.piece;if(ent.move.promotion)moved={...moved,type:ent.move.promotion};updated[r][c]=moved}
+ }
+ for(const x of captures){if(x.victim?.life){const who=x.victim.side==='W'?'White':'Black';events.push(`${who} lost a starting rook${x.victim.life==='crown'?' (the king-rook)':''}!`)}}
+ const wAlive=alive(updated,'W').size,bAlive=alive(updated,'B').size;
+ let outcome=null;
+ if(wAlive===0&&bAlive===0)outcome='draw';else if(wAlive===0)outcome='B';else if(bAlive===0)outcome='W';
+ return {board:updated,captures,events,collision,outcome};
+}
+const game={mode:'solo',board:initialBoard(),stage:'menu',round:1,selected:null,choices:[],pending:null,whiteMove:null,blackMove:null,last:null,lastResult:null,consecutivePass:0};
+function show(id,on){$(id).hidden=!on}
+function startGame(mode){
+ game.mode=mode;game.board=initialBoard();game.stage='white';game.round=1;game.selected=null;game.choices=[];game.pending=null;game.whiteMove=null;game.blackMove=null;game.last=null;game.lastResult=null;game.consecutivePass=0;
+ show('menu',false);show('game',true);show('homeButton',true);show('winnerDialog',false);show('handoff',false);show('promotionDialog',false);
+ $('modeBadge').textContent=mode==='solo'?'🤖 VS COMPUTER':'♜ TWO PLAYERS';
+ $('roundReport').innerHTML='<div class="muted small">No moves revealed yet. The board starts in the standard chess setup.</div>';
+ render();
+}
+function home(){game.stage='menu';show('menu',true);show('game',false);show('homeButton',false);for(const id of ['winnerDialog','handoff','promotionDialog'])show(id,false)}
+function orientation(){return game.mode==='friend'&&game.stage==='black'}
+function renderBoard(){
+ const el=$('board');el.replaceChildren();
+ const flip=orientation();$('boardPerspective').textContent=flip?'Black at bottom':'White at bottom';
+ for(let rr=0;rr<8;rr++)for(let cc=0;cc<8;cc++){
+  const r=flip?7-rr:rr,c=flip?7-cc:cc,p=game.board[r][c];
+  const btn=document.createElement('button');btn.type='button';btn.className='sq'+((r+c)%2?' dark':'');btn.setAttribute('aria-label',`${squareName(r,c)} ${p?(p.side==='W'?'White ':'Black ')+NAMES[p.type]:'empty square'}`);btn.dataset.square=squareName(r,c);
+  if(p?.life==='crown')btn.classList.add('royal');
+  if(game.selected&&same(game.selected,{r,c}))btn.classList.add('selected');
+  const hint=game.choices.some(m=>same(m.to,{r,c}));
+  if(hint)btn.classList.add(p?'can-capture':'possible');
+  if(game.last){if(game.last.some(x=>x.from&&same(x.from,{r,c})))btn.classList.add('last-from');if(game.last.some(x=>x.to&&same(x.to,{r,c})))btn.classList.add('last-to')}
+  if(p){const sym=document.createElement('span');sym.className='piece '+p.side;sym.textContent=PIECES[p.side][p.type];btn.appendChild(sym)}
+  if(cc===0){const rank=document.createElement('span');rank.className='coord rank';rank.textContent=8-r;btn.appendChild(rank)}
+  if(rr===7){const file=document.createElement('span');file.className='coord file';file.textContent=LETTERS[c];btn.appendChild(file)}
+  btn.addEventListener('click',()=>squareClick(r,c));el.appendChild(btn);
+ }
+}
+function lifeTokens(side){const existing=alive(game.board,side);return ['left','crown','right'].map(id=>`<span class="life ${side} ${existing.has(id)?'':'lost'} ${id==='crown'?'crowned':''}" title="${id==='crown'?'King-rook':(id==='left'?'Left rook':'Right rook')}${existing.has(id)?'':' captured'}">${PIECES[side][id==='crown'?'k':'r']}</span>`).join('')}
+function render(){
+ if(game.stage==='menu')return;
+ renderBoard();
+ const w=alive(game.board,'W').size,b=alive(game.board,'B').size;
+ $('whiteLives').innerHTML=lifeTokens('W');$('blackLives').innerHTML=lifeTokens('B');$('whiteLifeCount').textContent=w+' / 3';$('blackLifeCount').textContent=b+' / 3';
+ $('whiteCard').classList.toggle('current',game.stage==='white');$('blackCard').classList.toggle('current',game.stage==='black');
+ $('roundTag').textContent='Round '+game.round;
+ const playable=game.stage==='white'||game.stage==='black';
+ show('lockButton',playable);show('revealButton',game.stage==='reveal');
+ show('passButton',playable);show('changeButton',playable);
+ $('lockButton').disabled=!game.pending;$('changeButton').disabled=!game.pending;
+ const who=game.stage==='black'?'Black':'White';
+ $('lockButton').textContent='🔒 Lock in '+who+'’s move';
+ const phases={white:['White, choose a move',game.mode==='solo'?'You are White. Tap a piece and then its destination. The computer chooses Black’s move independently.':'Choose your move secretly, then pass the device to Black.'],black:['Black, choose a move','White’s move is hidden. Tap a Black piece and choose where it goes.'],reveal:['Both moves are locked!','Ready? Reveal both moves on the board at the same time.'],ended:['Game over','All three original rooks were lost.']};
+ const phase=phases[game.stage]||phases.white;
+ $('phaseTitle').textContent=phase[0];$('phaseHelp').textContent=phase[1];
+ if(game.stage==='reveal')$('selectionText').textContent='Both moves are private until you press Reveal.';
+ else if(game.pending?.pass)$('selectionText').textContent=who+' will pass this round. You can still change your mind.';
+ else if(game.pending){const p=game.board[game.pending.from.r][game.pending.from.c];$('selectionText').textContent='Selected: '+formatMove(game.pending,p)+'. Lock it in when ready.'}
+ else if(game.selected){const p=game.board[game.selected.r][game.selected.c];$('selectionText').textContent=NAMES[p.type]+' on '+squareName(game.selected.r,game.selected.c)+'. Choose a highlighted square.'}
+ else $('selectionText').textContent=who+': select a piece to see legal moves.';
+}
+function squareClick(r,c){
+ if(game.stage!=='white'&&game.stage!=='black')return;
+ const side=game.stage==='white'?'W':'B',p=game.board[r][c],dest=game.choices.find(m=>same(m.to,{r,c}));
+ if(dest){const from=game.board[dest.from.r][dest.from.c];
+  if(from.type==='p'&&(r===0||r===7)){showPromotion(dest,side);return}
+  game.pending=dest;game.selected=null;game.choices=[];render();return;
+ }
+ if(p?.side===side){game.selected={r,c};game.choices=movesFor(game.board,r,c);game.pending=null}
+ else{game.selected=null;game.choices=[]}
+ render();
+}
+function showPromotion(move,side){
+ const box=$('promotionChoices');box.replaceChildren();
+ for(const type of ['q','r','b','n']){
+  const b=document.createElement('button');b.className='promo-btn';b.title='Promote to '+NAMES[type];b.setAttribute('aria-label','Promote to '+NAMES[type]);b.textContent=PIECES[side][type];b.onclick=()=>{game.pending={...move,promotion:type};game.selected=null;game.choices=[];show('promotionDialog',false);render()};box.appendChild(b);
+ }
+ show('promotionDialog',true);
+}
+function passRound(){if(game.stage!=='white'&&game.stage!=='black')return;game.pending={pass:true};game.selected=null;game.choices=[];render()}
+function lock(){
+ if(!game.pending)return;
+ if(game.stage==='white'){
+  game.whiteMove=game.pending;game.pending=null;game.selected=null;game.choices=[];
+  if(game.mode==='solo'){
+   game.blackMove=chooseComputer(game.board);
+   doResolve();
+  }else{
+   game.stage='black';render();show('handoff',true);$('handoffTitle').textContent='Pass the device to Black';$('handoffText').textContent='White’s move is locked and hidden. Give the device to the Black player, then tap the button below.';$('handoffReady').textContent='I’m playing Black →';
+  }
+ }else if(game.stage==='black'){
+  game.blackMove=game.pending;game.pending=null;game.selected=null;game.choices=[];game.stage='reveal';render();show('handoff',true);$('handoffTitle').textContent='Both moves are locked!';$('handoffText').textContent='Hand the device back or gather together. The two moves will happen at the same time when you press Reveal.';$('handoffReady').textContent='See the Reveal button →';
+ }
+}
+function doResolve(){
+ const old=game.board,whitePiece=game.whiteMove.pass?null:old[game.whiteMove.from.r][game.whiteMove.from.c],blackPiece=game.blackMove.pass?null:old[game.blackMove.from.r][game.blackMove.from.c];
+ const result=resolveRound(old,game.whiteMove,game.blackMove);game.board=result.board;game.last=[game.whiteMove,game.blackMove].filter(m=>!m.pass);
+ const whiteLabel=formatMove(game.whiteMove,whitePiece),blackLabel=formatMove(game.blackMove,blackPiece);
+ const bothPass=game.whiteMove.pass&&game.blackMove.pass;game.consecutivePass=bothPass?game.consecutivePass+1:0;
+ if(game.consecutivePass>=3)result.outcome='draw-pass';
+ let report=`<div class="heading">Round ${game.round} · Moves revealed</div><div class="result-rows"><div class="result-row"><span>🔵 White</span><span>${whiteLabel}</span></div><div class="result-row"><span>🔴 Black</span><span>${blackLabel}</span></div></div>`;
+ const events=result.events.length?result.events:['No original rooks lost this round.'];
+ for(const e of events)report+='<div class="event">'+e+'</div>';
+ $('roundReport').innerHTML=report;
+ game.lastResult=result;game.stage=result.outcome?'ended':'white';if(!result.outcome)game.round++;game.whiteMove=null;game.blackMove=null;render();
+ if(result.outcome){
+  const draw=result.outcome.startsWith('draw');$('winIcon').textContent=draw?'🤝':'🏆';$('winnerTitle').textContent=draw?'It’s a draw!':(result.outcome==='W'?'White':'Black')+' wins!';
+  $('winnerDetail').textContent=result.outcome==='draw-pass'?'Both players passed for three rounds in a row.':draw?'Both players lost their last original rook in the same round!':'All three of '+(result.outcome==='W'?'Black':'White')+'’s original rooks have been captured. The king-rook counted as one of the three.';
+  show('winnerDialog',true);
+ }
+}
+$('soloButton').onclick=()=>startGame('solo');$('friendButton').onclick=()=>startGame('friend');$('homeButton').onclick=()=>{if(game.stage==='menu'||confirm('Leave this game and return to the menu?'))home()};
+$('lockButton').onclick=lock;$('passButton').onclick=passRound;$('changeButton').onclick=()=>{game.pending=null;game.choices=[];game.selected=null;render()};$('revealButton').onclick=doResolve;
+$('handoffReady').onclick=()=>{show('handoff',false);render()};
+$('cancelPromotion').onclick=()=>show('promotionDialog',false);
+$('rulesButton').onclick=()=>show('rulesDialog',true);$('closeRules').onclick=()=>show('rulesDialog',false);
+$('againButton').onclick=()=>startGame(game.mode);$('winnerMenuButton').onclick=home;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('rulesDialog').hidden)show('rulesDialog',false);else if(!$('promotionDialog').hidden)show('promotionDialog',false);else if(game.stage==='white'||game.stage==='black'){game.selected=null;game.choices=[];game.pending=null;render()}}});
+// Expose rule-engine helpers for automated verification; normal play does not use these references.
+window.TripleRookEngine={initialBoard,movesFor,allMoves,alive,resolveRound,makePiece};
+</script>
+</body>
+</html>
