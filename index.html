@@ -59,7 +59,7 @@
         <div class="selection" id="selectionText" aria-live="polite">Your move is not selected yet.</div>
         <div class="action-stack"><button id="lockButton" class="btn full" disabled>Lock in move</button><button id="revealButton" class="btn green full" hidden>Reveal both moves →</button><div class="tiny-actions"><button class="btn secondary" id="passButton">Pass this round</button><button class="btn ghost" id="changeButton" disabled>Change move</button></div></div>
       </section>
-      <section class="panel round-info"><h2>Latest round</h2><div class="round-card" id="roundReport"><div class="muted small">No moves revealed yet. The board starts in the standard chess setup.</div></div></section>
+      <section class="panel round-info"><h2>Game history</h2><div class="tiny-actions" style="margin-bottom:10px"><button class="btn secondary" id="historyBack" disabled>← Previous</button><button class="btn secondary" id="historyForward" disabled>Next →</button><button class="btn ghost" id="historyCurrent" disabled>Current</button></div><div class="round-card" id="historyReport"><div class="muted small">Your rounds will appear here as you play.</div></div></section><section class="panel"><h2>Latest round</h2><div class="round-card" id="roundReport"><div class="muted small">No moves revealed yet. The board starts in the standard chess setup.</div></div></section>
       <section class="panel"><h2>Game rules</h2><p class="muted small" style="margin-bottom:0">The king <b>moves only like a rook</b>, and capturing it does not cause checkmate. You win only after all three original rooks are gone. Both players choose from the same board position. If two pieces capture each other at once, both are lost.</p></section>
     </aside>
    </div>
@@ -169,10 +169,10 @@ function resolveRound(board,wMove,bMove){
  if(wAlive===0&&bAlive===0)outcome='draw';else if(wAlive===0)outcome='B';else if(bAlive===0)outcome='W';
  return {board:updated,captures,events,collision,outcome};
 }
-const game={mode:'solo',board:initialBoard(),stage:'menu',round:1,selected:null,choices:[],pending:null,whiteMove:null,blackMove:null,last:null,lastResult:null,consecutivePass:0};
+const game={mode:'solo',board:initialBoard(),stage:'menu',round:1,selected:null,choices:[],pending:null,whiteMove:null,blackMove:null,last:null,lastResult:null,consecutivePass:0,history:[],viewIndex:-1};
 function show(id,on){$(id).hidden=!on}
 function startGame(mode){
- game.mode=mode;game.board=initialBoard();game.stage='white';game.round=1;game.selected=null;game.choices=[];game.pending=null;game.whiteMove=null;game.blackMove=null;game.last=null;game.lastResult=null;game.consecutivePass=0;
+ game.mode=mode;game.board=initialBoard();game.stage='white';game.round=1;game.history=[{round:0,board:initialBoard(),whiteLabel:'—',blackLabel:'—',events:['Starting position']}];game.viewIndex=0;game.selected=null;game.choices=[];game.pending=null;game.whiteMove=null;game.blackMove=null;game.last=null;game.lastResult=null;game.consecutivePass=0;
  show('menu',false);show('game',true);show('homeButton',true);show('winnerDialog',false);show('handoff',false);show('promotionDialog',false);
  $('modeBadge').textContent=mode==='solo'?'🤖 VS COMPUTER':'♜ TWO PLAYERS';
  $('roundReport').innerHTML='<div class="muted small">No moves revealed yet. The board starts in the standard chess setup.</div>';
@@ -182,9 +182,10 @@ function home(){game.stage='menu';show('menu',true);show('game',false);show('hom
 function orientation(){return game.mode==='friend'&&game.stage==='black'}
 function renderBoard(){
  const el=$('board');el.replaceChildren();
+ const shown=game.history[game.viewIndex]?.board||game.board;
  const flip=orientation();$('boardPerspective').textContent=flip?'Black at bottom':'White at bottom';
  for(let rr=0;rr<8;rr++)for(let cc=0;cc<8;cc++){
-  const r=flip?7-rr:rr,c=flip?7-cc:cc,p=game.board[r][c];
+  const r=flip?7-rr:rr,c=flip?7-cc:cc,p=shown[r][c];
   const btn=document.createElement('button');btn.type='button';btn.className='sq'+((r+c)%2?' dark':'');btn.setAttribute('aria-label',`${squareName(r,c)} ${p?(p.side==='W'?'White ':'Black ')+NAMES[p.type]:'empty square'}`);btn.dataset.square=squareName(r,c);
   if(p?.life==='crown')btn.classList.add('royal');
   if(game.selected&&same(game.selected,{r,c}))btn.classList.add('selected');
@@ -197,15 +198,18 @@ function renderBoard(){
   btn.addEventListener('click',()=>squareClick(r,c));el.appendChild(btn);
  }
 }
-function lifeTokens(side){const existing=alive(game.board,side);return ['left','crown','right'].map(id=>`<span class="life ${side} ${existing.has(id)?'':'lost'} ${id==='crown'?'crowned':''}" title="${id==='crown'?'King-rook':(id==='left'?'Left rook':'Right rook')}${existing.has(id)?'':' captured'}">${PIECES[side][id==='crown'?'k':'r']}</span>`).join('')}
+function lifeTokens(side,board=game.board){const existing=alive(board,side);return ['left','crown','right'].map(id=>`<span class="life ${side} ${existing.has(id)?'':'lost'} ${id==='crown'?'crowned':''}" title="${id==='crown'?'King-rook':(id==='left'?'Left rook':'Right rook')}${existing.has(id)?'':' captured'}">${PIECES[side][id==='crown'?'k':'r']}</span>`).join('')}
 function render(){
  if(game.stage==='menu')return;
  renderBoard();
- const w=alive(game.board,'W').size,b=alive(game.board,'B').size;
- $('whiteLives').innerHTML=lifeTokens('W');$('blackLives').innerHTML=lifeTokens('B');$('whiteLifeCount').textContent=w+' / 3';$('blackLifeCount').textContent=b+' / 3';
+ const shown=game.history[game.viewIndex]?.board||game.board;const viewing=game.viewIndex<game.history.length-1;
+ const w=alive(shown,'W').size,b=alive(shown,'B').size;
+ $('whiteLives').innerHTML=lifeTokens('W',shown);$('blackLives').innerHTML=lifeTokens('B',shown);$('whiteLifeCount').textContent=w+' / 3';$('blackLifeCount').textContent=b+' / 3';
  $('whiteCard').classList.toggle('current',game.stage==='white');$('blackCard').classList.toggle('current',game.stage==='black');
- $('roundTag').textContent='Round '+game.round;
- const playable=game.stage==='white'||game.stage==='black';
+ $('roundTag').textContent=viewing?'Viewing round '+game.history[game.viewIndex].round:'Round '+game.round;
+ $('historyBack').disabled=game.viewIndex<=0;$('historyForward').disabled=game.viewIndex>=game.history.length-1;$('historyCurrent').disabled=!viewing;
+ const entry=game.history[game.viewIndex];$('historyReport').innerHTML='<div class="heading">'+(entry.round===0?'Starting position':'Round '+entry.round)+'</div><div class="result-rows"><div class="result-row"><span>🔵 White</span><span>'+entry.whiteLabel+'</span></div><div class="result-row"><span>🔴 Black</span><span>'+entry.blackLabel+'</span></div></div>'+entry.events.map(e=>'<div class="event">'+e+'</div>').join('');
+ const playable=(game.stage==='white'||game.stage==='black')&&!viewing;
  show('lockButton',playable);show('revealButton',game.stage==='reveal');
  show('passButton',playable);show('changeButton',playable);
  $('lockButton').disabled=!game.pending;$('changeButton').disabled=!game.pending;
@@ -221,6 +225,7 @@ function render(){
  else $('selectionText').textContent=who+': select a piece to see legal moves.';
 }
 function squareClick(r,c){
+ if(game.viewIndex<game.history.length-1)return;
  if(game.stage!=='white'&&game.stage!=='black')return;
  const side=game.stage==='white'?'W':'B',p=game.board[r][c],dest=game.choices.find(m=>same(m.to,{r,c}));
  if(dest){const from=game.board[dest.from.r][dest.from.c];
@@ -263,6 +268,7 @@ function doResolve(){
  const events=result.events.length?result.events:['No original rooks lost this round.'];
  for(const e of events)report+='<div class="event">'+e+'</div>';
  $('roundReport').innerHTML=report;
+ game.history.push({round:game.round,board:result.board.map(row=>row.map(p=>p?{...p}:null)),whiteLabel,blackLabel,events:events.slice()});game.viewIndex=game.history.length-1;
  game.lastResult=result;game.stage=result.outcome?'ended':'white';if(!result.outcome)game.round++;game.whiteMove=null;game.blackMove=null;render();
  if(result.outcome){
   const draw=result.outcome.startsWith('draw');$('winIcon').textContent=draw?'🤝':'🏆';$('winnerTitle').textContent=draw?'It’s a draw!':(result.outcome==='W'?'White':'Black')+' wins!';
@@ -271,6 +277,9 @@ function doResolve(){
  }
 }
 $('soloButton').onclick=()=>startGame('solo');$('friendButton').onclick=()=>startGame('friend');$('homeButton').onclick=()=>{if(game.stage==='menu'||confirm('Leave this game and return to the menu?'))home()};
+$('historyBack').onclick=()=>{if(game.viewIndex>0){game.viewIndex--;game.selected=null;game.choices=[];render()}};
+$('historyForward').onclick=()=>{if(game.viewIndex<game.history.length-1){game.viewIndex++;game.selected=null;game.choices=[];render()}};
+$('historyCurrent').onclick=()=>{game.viewIndex=game.history.length-1;render()};
 $('lockButton').onclick=lock;$('passButton').onclick=passRound;$('changeButton').onclick=()=>{game.pending=null;game.choices=[];game.selected=null;render()};$('revealButton').onclick=doResolve;
 $('handoffReady').onclick=()=>{show('handoff',false);render()};
 $('cancelPromotion').onclick=()=>show('promotionDialog',false);
