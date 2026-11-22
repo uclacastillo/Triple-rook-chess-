@@ -38,7 +38,7 @@
  <section class="menu" id="menu">
    <div class="hero"><div class="eyebrow">A new kind of chess</div><h1>Three rooks.<br><em>One big twist.</em></h1><p>Your king is the third rook. Plan your moves in secret, reveal them together, and capture all three of your opponent’s original rooks to win.</p></div>
    <div class="mode-grid">
-    <button class="mode" id="soloButton"><div class="emblem">🤖</div><h2>Play the computer</h2><p>Try your game right now. You play White; the computer plans Black’s moves.</p></button>
+    <button class="mode" id="soloButton"><div class="emblem">🤖</div><h2>Play the computer</h2><p>Try your game right now. You play Blue; the computer plans Red’s moves.</p></button>
     <button class="mode" id="friendButton"><div class="emblem">♜♟</div><h2>Two players</h2><p>Pass one phone or computer between players. Each move stays secret until the reveal.</p></button>
    </div>
    <div class="mini-rules"><div class="rule-chip"><b>♚</b> King moves like a rook</div><div class="rule-chip"><b>↔</b> Moves happen together</div><div class="rule-chip"><b>3</b> Capture all three to win</div></div>
@@ -47,15 +47,15 @@
    <div class="game-layout">
     <div class="board-area">
       <div class="board-top"><span id="modeBadge" class="mode-name">🤖 VS COMPUTER</span><span id="roundTag" class="turn-info">Round 1</span></div>
-      <div class="board-shell"><div id="board" class="board" role="group" aria-label="Triple Rook Chess board"></div><div class="board-legend"><span><i class="key-dot"></i> Tap a piece, then a highlighted square</span><span id="boardPerspective">White at bottom</span></div></div>
+      <div class="board-shell"><div id="board" class="board" role="group" aria-label="Triple Rook Chess board"></div><div class="board-legend"><span><i class="key-dot"></i> Tap a piece, then a highlighted square</span><span id="boardPerspective">Blue at bottom</span></div></div>
     </div>
     <aside class="side">
       <section class="panel controls">
         <h2>Three lives each</h2><div class="players">
-          <div class="player-card" id="whiteCard"><h3>🔵 White <small id="whiteLifeCount">3 / 3</small></h3><div class="lives" id="whiteLives"></div></div>
-          <div class="player-card" id="blackCard"><h3>🔴 Black <small id="blackLifeCount">3 / 3</small></h3><div class="lives" id="blackLives"></div></div>
+          <div class="player-card" id="whiteCard"><h3>🔵 Blue <small id="whiteLifeCount">3 / 3</small></h3><div class="lives" id="whiteLives"></div></div>
+          <div class="player-card" id="blackCard"><h3>🔴 Red <small id="blackLifeCount">3 / 3</small></h3><div class="lives" id="blackLives"></div></div>
         </div>
-        <div class="status" aria-live="polite"><b id="phaseTitle">White, choose your move</b><p id="phaseHelp">Tap one of your pieces, then pick a highlighted square.</p></div>
+        <div class="status" aria-live="polite"><b id="phaseTitle">Blue, choose your move</b><p id="phaseHelp">Tap one of your pieces, then pick a highlighted square.</p></div>
         <div class="selection" id="selectionText" aria-live="polite">Your move is not selected yet.</div>
         <div class="action-stack"><button id="lockButton" class="btn full" disabled>Lock in move</button><button id="revealButton" class="btn green full" hidden>Reveal both moves →</button><div class="tiny-actions"><button class="btn secondary" id="passButton">Pass this round</button><button class="btn ghost" id="changeButton" disabled>Change move</button></div></div>
       </section>
@@ -67,9 +67,9 @@
  </section>
 </main>
 </div>
-<div class="veil" id="handoff" hidden role="dialog" aria-modal="true" aria-labelledby="handoffTitle"><div class="dialog"><div class="big">🔒</div><h2 id="handoffTitle">Pass the device to Black</h2><p id="handoffText">White’s move is locked and hidden. Give the device to the Black player, then tap the button below.</p><button class="btn" id="handoffReady">I'm playing Black →</button></div></div>
+<div class="veil" id="handoff" hidden role="dialog" aria-modal="true" aria-labelledby="handoffTitle"><div class="dialog"><div class="big">🔒</div><h2 id="handoffTitle">Pass the device to Red</h2><p id="handoffText">Blue’s move is locked and hidden. Give the device to the Red player, then tap the button below.</p><button class="btn" id="handoffReady">I'm playing Red →</button></div></div>
 <div class="veil" id="promotionDialog" hidden role="dialog" aria-modal="true" aria-labelledby="promoTitle"><div class="dialog"><div class="big">♙</div><h2 id="promoTitle">Promote your pawn</h2><p>Choose a new piece. A promoted rook does not add a new life.</p><div id="promotionChoices" class="promotions"></div><button class="btn secondary" id="cancelPromotion">Cancel</button></div></div>
-<div class="veil" id="winnerDialog" hidden role="dialog" aria-modal="true" aria-labelledby="winnerTitle"><div class="dialog"><div class="big" id="winIcon">🏆</div><h2 id="winnerTitle">White wins!</h2><p id="winnerDetail">All three starting rooks are gone.</p><button class="btn" id="againButton">Play again</button><button class="btn secondary" id="winnerMenuButton">Choose a different mode</button></div></div>
+<div class="veil" id="winnerDialog" hidden role="dialog" aria-modal="true" aria-labelledby="winnerTitle"><div class="dialog"><div class="big" id="winIcon">🏆</div><h2 id="winnerTitle">Blue wins!</h2><p id="winnerDetail">All three starting rooks are gone.</p><button class="btn" id="againButton">Play again</button><button class="btn secondary" id="winnerMenuButton">Choose a different mode</button></div></div>
 <div class="veil" id="rulesDialog" hidden role="dialog" aria-modal="true" aria-labelledby="rulesTitle"><div class="dialog rules"><div class="eyebrow">The official game rules (first version)</div><h2 id="rulesTitle">How Triple Rook Chess works</h2><ol><li>Start with a normal 8×8 chessboard and all the usual pieces.</li><li>The <b>king is the third rook</b>: it moves any number of squares horizontally or vertically, like a rook. The other two rooks also move normally.</li><li>There is <b>no check or checkmate</b>. The king may be captured like any other piece, and that only removes one of your three lives.</li><li>Both players secretly select one legal move from the <b>same starting position</b>. Then both moves happen at once. You can also pass.</li><li>If both pieces move onto <b>the same destination square</b>, both are removed. If they <b>try to capture each other by swapping squares</b>, both are also removed. Otherwise, a piece that moves away from an attacked square escapes.</li><li>The player who loses all three <b>original rooks</b> (the king-rook and two normal rooks) loses. If both players lose their last rook together, it’s a draw.</li><li>Pawns can promote, but promoted rooks do not create extra lives. Castling and en passant are not used. Three rounds of both players passing results in a draw.</li></ol><button class="btn close" id="closeRules">Got it!</button></div></div>
 <script>
 'use strict';
@@ -134,7 +134,7 @@ function chooseComputer(board){
   const central=3.5-(Math.abs(m.to.c-3.5)+Math.abs(m.to.r-3.5))/2;
   value+=central*.7;
   if(attacked.has(squareName(m.to.r,m.to.c)))value-=piece.life?15:piece.type==='q'?8:2;
-  // Prefer advancing towards White and building threats when there is no immediate capture.
+  // Prefer advancing towards Blue and building threats when there is no immediate capture.
   value+=(m.to.r-m.from.r)*.15;
   return {m,value};
  });
@@ -163,7 +163,7 @@ function resolveRound(board,wMove,bMove){
   for(const ent of active){const {r,c}=ent.move.to;const victim=updated[r][c];if(victim&&victim.side!==ent.side){captures.push({victim,by:ent.side});updated[r][c]=null}}
   for(const ent of active){const {r,c}=ent.move.to;let moved=ent.piece;if(ent.move.promotion)moved={...moved,type:ent.move.promotion};updated[r][c]=moved}
  }
- for(const x of captures){if(x.victim?.life){const who=x.victim.side==='W'?'White':'Black';events.push(`${who} lost a starting rook${x.victim.life==='crown'?' (the king-rook)':''}!`)}}
+ for(const x of captures){if(x.victim?.life){const who=x.victim.side==='W'?'Blue':'Red';events.push(`${who} lost a starting rook${x.victim.life==='crown'?' (the king-rook)':''}!`)}}
  const wAlive=alive(updated,'W').size,bAlive=alive(updated,'B').size;
  let outcome=null;
  if(wAlive===0&&bAlive===0)outcome='draw';else if(wAlive===0)outcome='B';else if(bAlive===0)outcome='W';
@@ -183,10 +183,10 @@ function orientation(){return game.mode==='friend'&&game.stage==='black'}
 function renderBoard(){
  const el=$('board');el.replaceChildren();
  const shown=game.history[game.viewIndex]?.board||game.board;
- const flip=orientation();$('boardPerspective').textContent=flip?'Black at bottom':'White at bottom';
+ const flip=orientation();$('boardPerspective').textContent=flip?'Red at bottom':'Blue at bottom';
  for(let rr=0;rr<8;rr++)for(let cc=0;cc<8;cc++){
   const r=flip?7-rr:rr,c=flip?7-cc:cc,p=shown[r][c];
-  const btn=document.createElement('button');btn.type='button';btn.className='sq'+((r+c)%2?' dark':'');btn.setAttribute('aria-label',`${squareName(r,c)} ${p?(p.side==='W'?'White ':'Black ')+NAMES[p.type]:'empty square'}`);btn.dataset.square=squareName(r,c);
+  const btn=document.createElement('button');btn.type='button';btn.className='sq'+((r+c)%2?' dark':'');btn.setAttribute('aria-label',`${squareName(r,c)} ${p?(p.side==='W'?'Blue ':'Red ')+NAMES[p.type]:'empty square'}`);btn.dataset.square=squareName(r,c);
   if(p?.life==='crown')btn.classList.add('royal');
   if(game.selected&&same(game.selected,{r,c}))btn.classList.add('selected');
   const hint=game.choices.some(m=>same(m.to,{r,c}));
@@ -208,14 +208,14 @@ function render(){
  $('whiteCard').classList.toggle('current',game.stage==='white');$('blackCard').classList.toggle('current',game.stage==='black');
  $('roundTag').textContent=viewing?'Viewing round '+game.history[game.viewIndex].round:'Round '+game.round;
  $('historyBack').disabled=game.viewIndex<=0;$('historyForward').disabled=game.viewIndex>=game.history.length-1;$('historyCurrent').disabled=!viewing;
- const entry=game.history[game.viewIndex];$('historyReport').innerHTML='<div class="heading">'+(entry.round===0?'Starting position':'Round '+entry.round)+'</div><div class="result-rows"><div class="result-row"><span>🔵 White</span><span>'+entry.whiteLabel+'</span></div><div class="result-row"><span>🔴 Black</span><span>'+entry.blackLabel+'</span></div></div>'+entry.events.map(e=>'<div class="event">'+e+'</div>').join('');
+ const entry=game.history[game.viewIndex];$('historyReport').innerHTML='<div class="heading">'+(entry.round===0?'Starting position':'Round '+entry.round)+'</div><div class="result-rows"><div class="result-row"><span>🔵 Blue</span><span>'+entry.whiteLabel+'</span></div><div class="result-row"><span>🔴 Red</span><span>'+entry.blackLabel+'</span></div></div>'+entry.events.map(e=>'<div class="event">'+e+'</div>').join('');
  const playable=(game.stage==='white'||game.stage==='black')&&!viewing;
  show('lockButton',playable);show('revealButton',game.stage==='reveal');
  show('passButton',playable);show('changeButton',playable);
  $('lockButton').disabled=!game.pending;$('changeButton').disabled=!game.pending;
- const who=game.stage==='black'?'Black':'White';
+ const who=game.stage==='black'?'Red':'Blue';
  $('lockButton').textContent='🔒 Lock in '+who+'’s move';
- const phases={white:['White, choose a move',game.mode==='solo'?'You are White. Tap a piece and then its destination. The computer chooses Black’s move independently.':'Choose your move secretly, then pass the device to Black.'],black:['Black, choose a move','White’s move is hidden. Tap a Black piece and choose where it goes.'],reveal:['Both moves are locked!','Ready? Reveal both moves on the board at the same time.'],ended:['Game over','All three original rooks were lost.']};
+ const phases={white:['Blue, choose a move',game.mode==='solo'?'You are Blue. Tap a piece and then its destination. The computer chooses Red’s move independently.':'Choose your move secretly, then pass the device to Red.'],black:['Red, choose a move','Blue’s move is hidden. Tap a Red piece and choose where it goes.'],reveal:['Both moves are locked!','Ready? Reveal both moves on the board at the same time.'],ended:['Game over','All three original rooks were lost.']};
  const phase=phases[game.stage]||phases.white;
  $('phaseTitle').textContent=phase[0];$('phaseHelp').textContent=phase[1];
  if(game.stage==='reveal')$('selectionText').textContent='Both moves are private until you press Reveal.';
@@ -252,7 +252,7 @@ function lock(){
    game.blackMove=chooseComputer(game.board);
    doResolve();
   }else{
-   game.stage='black';render();show('handoff',true);$('handoffTitle').textContent='Pass the device to Black';$('handoffText').textContent='White’s move is locked and hidden. Give the device to the Black player, then tap the button below.';$('handoffReady').textContent='I’m playing Black →';
+   game.stage='black';render();show('handoff',true);$('handoffTitle').textContent='Pass the device to Red';$('handoffText').textContent='Blue’s move is locked and hidden. Give the device to the Red player, then tap the button below.';$('handoffReady').textContent='I’m playing Red →';
   }
  }else if(game.stage==='black'){
   game.blackMove=game.pending;game.pending=null;game.selected=null;game.choices=[];game.stage='reveal';render();show('handoff',true);$('handoffTitle').textContent='Both moves are locked!';$('handoffText').textContent='Hand the device back or gather together. The two moves will happen at the same time when you press Reveal.';$('handoffReady').textContent='See the Reveal button →';
@@ -264,15 +264,15 @@ function doResolve(){
  const whiteLabel=formatMove(game.whiteMove,whitePiece),blackLabel=formatMove(game.blackMove,blackPiece);
  const bothPass=game.whiteMove.pass&&game.blackMove.pass;game.consecutivePass=bothPass?game.consecutivePass+1:0;
  if(game.consecutivePass>=3)result.outcome='draw-pass';
- let report=`<div class="heading">Round ${game.round} · Moves revealed</div><div class="result-rows"><div class="result-row"><span>🔵 White</span><span>${whiteLabel}</span></div><div class="result-row"><span>🔴 Black</span><span>${blackLabel}</span></div></div>`;
+ let report=`<div class="heading">Round ${game.round} · Moves revealed</div><div class="result-rows"><div class="result-row"><span>🔵 Blue</span><span>${whiteLabel}</span></div><div class="result-row"><span>🔴 Red</span><span>${blackLabel}</span></div></div>`;
  const events=result.events.length?result.events:['No original rooks lost this round.'];
  for(const e of events)report+='<div class="event">'+e+'</div>';
  $('roundReport').innerHTML=report;
  game.history.push({round:game.round,board:result.board.map(row=>row.map(p=>p?{...p}:null)),whiteLabel,blackLabel,events:events.slice()});game.viewIndex=game.history.length-1;
  game.lastResult=result;game.stage=result.outcome?'ended':'white';if(!result.outcome)game.round++;game.whiteMove=null;game.blackMove=null;render();
  if(result.outcome){
-  const draw=result.outcome.startsWith('draw');$('winIcon').textContent=draw?'🤝':'🏆';$('winnerTitle').textContent=draw?'It’s a draw!':(result.outcome==='W'?'White':'Black')+' wins!';
-  $('winnerDetail').textContent=result.outcome==='draw-pass'?'Both players passed for three rounds in a row.':draw?'Both players lost their last original rook in the same round!':'All three of '+(result.outcome==='W'?'Black':'White')+'’s original rooks have been captured. The king-rook counted as one of the three.';
+  const draw=result.outcome.startsWith('draw');$('winIcon').textContent=draw?'🤝':'🏆';$('winnerTitle').textContent=draw?'It’s a draw!':(result.outcome==='W'?'Blue':'Red')+' wins!';
+  $('winnerDetail').textContent=result.outcome==='draw-pass'?'Both players passed for three rounds in a row.':draw?'Both players lost their last original rook in the same round!':'All three of '+(result.outcome==='W'?'Red':'Blue')+'’s original rooks have been captured. The king-rook counted as one of the three.';
   show('winnerDialog',true);
  }
 }
@@ -291,3 +291,12 @@ window.TripleRookEngine={initialBoard,movesFor,allMoves,alive,resolveRound,makeP
 </script>
 </body>
 </html>
+/* Team palette: Blue vs Red */
+:root{--side-blue:#3b9cff;--side-red:#f04452}
+.sq .piece.W{background:linear-gradient(145deg,#b8e2ff,#2586f5);color:#082f68;-webkit-text-stroke:.25px #082f68;border-color:#145fc2}
+.sq .piece.B{background:linear-gradient(145deg,#ffb0b5,#ed2939);color:#6e101b;-webkit-text-stroke:.25px #6e101b;border-color:#b8172b}
+.player-card:first-child{border-color:#287ed1;background:#153b66}
+.player-card:last-child{border-color:#c52b3b;background:#4b202b}
+.player-card:first-child h3{color:#a9d7ff}
+.player-card:last-child h3{color:#ffb4bb}
+.life.W{color:var(--side-blue)}.life.B{color:var(--side-red)}
