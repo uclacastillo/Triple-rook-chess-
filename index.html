@@ -27,6 +27,8 @@
 .life.crowned{text-shadow:0 0 6px #f4c568}
 @media(max-width:480px){.sq .piece{width:86%;height:86%;font-size:clamp(22px,7.1vw,36px);border-width:1.5px}}
 </style>
+  <!-- Character Crew view is optional; Classic board remains available. -->
+  <link rel="stylesheet" href="assets/character-crew.css">
 </head>
 <body>
 <div class="container">
@@ -320,14 +322,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('rulesDialog'
 // Expose rule-engine helpers for automated verification; normal play does not use these references.
 window.TripleRookEngine={initialBoard,movesFor,allMoves,alive,resolveRound,makePiece};
 </script>
+  <script src="assets/character-crew.js"></script>
 </body>
 </html>
-/* Team palette: Blue vs Red */
-:root{--side-blue:#3b9cff;--side-red:#f04452}
-.sq .piece.W{background:linear-gradient(145deg,#b8e2ff,#2586f5);color:#082f68;-webkit-text-stroke:.25px #082f68;border-color:#145fc2}
-.sq .piece.B{background:linear-gradient(145deg,#ffb0b5,#ed2939);color:#6e101b;-webkit-text-stroke:.25px #6e101b;border-color:#b8172b}
-.player-card:first-child{border-color:#287ed1;background:#153b66}
-.player-card:last-child{border-color:#c52b3b;background:#4b202b}
-.player-card:first-child h3{color:#a9d7ff}
-.player-card:last-child h3{color:#ffb4bb}
-.life.W{color:var(--side-blue)}.life.B{color:var(--side-red)}

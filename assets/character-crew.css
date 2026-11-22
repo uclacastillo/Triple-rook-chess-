@@ -1,0 +1,27 @@
+/* Character Crew 2.5D experiment — preserves Noah's rules engine and Classic view. */
+:root{--side-blue:#3b9cff;--side-red:#f04452}
+.sq .piece.W{background:linear-gradient(145deg,#c7e9ff,#2586f5);color:#083267;-webkit-text-stroke:.25px #10406b;border-color:#145fc2}
+.sq .piece.B{background:linear-gradient(145deg,#ffc4c7,#f04452);color:#71131e;-webkit-text-stroke:.25px #71131e;border-color:#b8172b}
+.player-card:first-child{border-color:#287ed1;background:#153b66}
+.player-card:last-child{border-color:#c52b3b;background:#4b202b}
+.player-card:first-child h3{color:#a9d7ff}.player-card:last-child h3{color:#ffb4bb}
+.life.W{color:var(--side-blue)}.life.B{color:var(--side-red)}
+#characterViewToggle{white-space:nowrap;border:1px solid #e1b762;color:#fbe7c4;background:linear-gradient(145deg,#353a47,#252c3c)}
+#characterViewToggle[aria-pressed="true"]{background:linear-gradient(145deg,#715327,#42371f);border-color:#f4c568;color:#fff0d1}
+.board-shell:has(.board.character-view){background:radial-gradient(ellipse at 48% 10%,#344763 0,#18263a 70%);overflow:visible}
+.board.character-view{display:block!important;position:relative;overflow:visible;border:0;border-radius:0;box-shadow:none;background: url('./board-2.5d.webp') center center / 100% 100% no-repeat;aspect-ratio:1200 / 1120;touch-action:manipulation;isolation:isolate}
+.board.character-view .char-square{position:absolute;inset:0;width:100%;height:100%;min-width:unset;padding:0;border:0;border-radius:0;background:transparent;z-index:2;cursor:pointer;transition:background-color .12s;appearance:none;touch-action:manipulation}
+.board.character-view .char-square.selected{background:rgba(252,213,92,.57)}
+.board.character-view .char-square.possible{background:rgba(73,226,166,.29)}
+.board.character-view .char-square.can-capture{background:rgba(246,105,91,.45)}
+.board.character-view .char-square.last-to:not(.selected){background:rgba(245,204,91,.23)}
+.board.character-view .char-square:focus-visible{outline:none;background:rgba(255,221,103,.6)}
+.board.character-view .char-dot{position:absolute;left:50%;top:50%;width:22px;height:22px;max-width:25%;max-height:25%;transform:translate(-50%,-50%);background:rgba(31,100,69,.7);border:2px solid #b3f6d2;border-radius:50%;pointer-events:none}
+.board.character-view .char-sprite{position:absolute;height:auto;max-width:none;user-select:none;-webkit-user-drag:none;transform:translate(-50%,-95%);filter:drop-shadow(0 5px 3px #110e0dab);pointer-events:none;touch-action:manipulation;transition:filter .12s}
+.board.character-view .char-sprite.selected{filter:drop-shadow(0 0 8px #ffd86f) drop-shadow(0 4px 2px #121621)}
+.board.character-view .char-sprite:focus-visible{outline:2px solid #ffdf86;outline-offset:-12px;border-radius:30%}
+.board.character-view .char-sprite.is-royal{filter:drop-shadow(0 0 4px #ffc968b0) drop-shadow(0 5px 3px #110e0d8c)}
+.char-view-caption{display:inline-block;color:#efd6a5;font-size:.72rem;font-weight:700;letter-spacing:.01em}
+@media(max-width:600px){.top-actions{gap:5px}.top-actions .pill-btn{padding:8px 9px;font-size:.72rem}#characterViewToggle{font-size:.73rem;letter-spacing:-.02em}.board-legend{font-size:.68rem}.board-shell{padding:4px}.board.character-view .char-dot{width:9px;height:9px;border-width:1px}}
+@media(max-width:365px){.brand{font-size:.86rem}.board-legend span:nth-child(2){display:none}}
+@media(prefers-reduced-motion:reduce){.board.character-view .char-sprite,.board.character-view .char-square{transition:none}}
