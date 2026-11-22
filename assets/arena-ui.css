@@ -130,3 +130,32 @@ body.arena-active .board.character-view .char-sprite.selected{filter:drop-shadow
 body.arena-active .arena-title{-webkit-mask-image:radial-gradient(ellipse 74% 74% at 50% 50%,#000 56%,transparent 99%);mask-image:radial-gradient(ellipse 74% 74% at 50% 50%,#000 56%,transparent 99%)}
 @media (min-width:356px) and (max-width:480px){body.arena-active .top{height:160px}body.arena-active .arena-title{margin-top:46px;max-height:100px}}
 @media(max-width:355px){body.arena-active .top{height:137px}body.arena-active .arena-title{margin-top:41px;max-height:81px}}
+
+/* Menu-specific masthead: arena-active is intentionally absent on the homepage.
+   Without these rules the image falls back to its intrinsic width on an iPhone. */
+body:not(.arena-active) .top{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  box-sizing:border-box;min-height:180px;padding:14px 48px 10px;margin:0 auto;
+}
+body:not(.arena-active) .top>.brand{display:none}
+body:not(.arena-active) .arena-title{
+  display:block;min-width:0;max-width:100%;width:min(420px,100%);
+  height:auto;max-height:156px;object-fit:contain;
+  filter:drop-shadow(0 5px 13px #040916b0);
+  -webkit-mask-image:radial-gradient(ellipse 76% 85% at 50% 50%,#000 59%,transparent 100%);
+  mask-image:radial-gradient(ellipse 76% 85% at 50% 50%,#000 59%,transparent 100%);
+}
+body:not(.arena-active) .top-actions{
+  position:absolute;top:13px;right:0;display:flex;justify-content:flex-end;align-items:center;
+}
+body:not(.arena-active) #characterViewToggle{display:none}
+@media(max-width:480px){
+ body:not(.arena-active) .top{min-height:168px;padding:14px 35px 9px}
+ body:not(.arena-active) .arena-title{width:min(335px,100%);max-height:137px}
+ body:not(.arena-active) .top-actions{top:7px;right:0}
+ body:not(.arena-active) .top-actions #rulesButton{padding:8px 10px;font-size:.76rem}
+}
+@media(max-width:355px){
+ body:not(.arena-active) .top{min-height:145px;padding:11px 38px 5px}
+ body:not(.arena-active) .arena-title{max-height:118px}
+}
