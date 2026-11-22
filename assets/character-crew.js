@@ -51,7 +51,7 @@
     img.style.left=pct((left.x+right.x)/2,STAGE_WIDTH);
     img.style.top=pct(yBase,STAGE_HEIGHT);
     // Pawns stay subordinate in height; king-rook and queen have a hero silhouette.
-    const magnify=({'p':1.13,'n':1.37,'b':1.34,'q':1.33,'k':1.37,'r':1.30})[p.type];
+    const magnify=({'p':.89,'n':1.02,'b':.99,'q':1.02,'k':1.07,'r':.98})[p.type];
     img.style.width=pct(tileWidth*magnify,STAGE_WIDTH);
     img.style.zIndex=String(9+rr);
     img.draggable=false;img.setAttribute('aria-hidden','true');

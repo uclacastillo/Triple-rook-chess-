@@ -1,0 +1,132 @@
+/* Triple Rook Chess — Character Crew Arena UI
+   Presentation-only: does not alter movement or multiplayer state. */
+:root{--arena-gold:#f7c55e;--arena-ink:#f7e7c7;--arena-sky:#122647;--arena-cocoa:#3a2132}
+body.arena-active{background:radial-gradient(ellipse 75% 35% at 52% -2%,#35527b 0,transparent 94%),linear-gradient(180deg,#08172e 0%,#111b32 58%,#172c52 100%);background-attachment:fixed}
+body.arena-active::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.32;background:radial-gradient(ellipse 55% 25% at 0% 15%,#224d8b 0,transparent 90%),radial-gradient(ellipse 55% 28% at 100% 17%,#7c3846 0,transparent 90%),linear-gradient(90deg,transparent 0 4%,#101b32 4% 6%,transparent 6% 94%,#101b32 94% 96%,transparent 96%)}
+body.arena-active .container{max-width:1160px;width:min(100% - 22px,1160px)}
+body.arena-active .top{position:relative;display:flex;justify-content:center;align-items:center;height:155px;padding:4px 0 8px;margin:0}
+body.arena-active .top>.brand{display:none}
+body.arena-active .arena-title{width:min(470px,calc(100% - 160px));max-height:140px;object-fit:contain;display:block;filter:drop-shadow(0 7px 16px #050c15cc);pointer-events:none}
+body.arena-active .top-actions{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:flex-start;gap:7px;padding-top:44px;pointer-events:none}
+body.arena-active .top-actions .pill-btn{pointer-events:auto;display:grid;place-items:center;min-width:48px;height:46px;padding:0 9px;border:2px solid #f1bd57;background:linear-gradient(150deg,#253753,#0d182f);box-shadow:0 3px 0 #714b25,0 6px 15px #02070dbd;color:#ffe1a0;border-radius:14px;font-weight:950;font-size:0}
+body.arena-active .top-actions .pill-btn::before{font-size:22px;line-height:1}
+body.arena-active #homeButton{order:0;margin-right:auto}
+body.arena-active #homeButton::before{content:'←'}
+body.arena-active #rulesButton{order:3}
+body.arena-active #rulesButton::before{content:'⚙'}
+body.arena-active #characterViewToggle{order:2;background:linear-gradient(160deg,#3d3d45,#182845)}
+body.arena-active #characterViewToggle::before{content:'3D';font-size:13px;letter-spacing:-.01em}
+body.arena-active #characterViewToggle[aria-pressed="false"]::before{content:'2D'}
+body.arena-active #game .game-layout{grid-template-columns:minmax(0,740px) minmax(280px,1fr);gap:18px}
+body.arena-active .board-area{width:100%;min-width:0;position:relative}
+body.arena-active .board-top{display:none}
+body.arena-active .arena-matchbar{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:9px;margin:0 3px 12px}
+.arena-matchbar .arena-team{display:flex;gap:10px;min-width:0;align-items:center;border-radius:16px;padding:7px 11px;background:linear-gradient(145deg,#153253,#122036);border:1.5px solid #50b8fb;box-shadow:inset 0 0 0 1px #b5eaff18,0 0 18px #1876b73a;min-height:70px}
+.arena-matchbar .arena-team.red{flex-direction:row-reverse;text-align:right;border-color:#de756a;background:linear-gradient(145deg,#42263b,#2a1c2b);box-shadow:inset 0 0 0 1px #f4baa91c,0 0 18px #c75a5b1d}
+.arena-team .arena-avatar{flex:0 0 53px;width:53px;height:53px;overflow:hidden;border:2px solid #ffcf75;border-radius:50%;background:radial-gradient(circle at 40% 34%,#4275aa,#09213e);box-shadow:0 0 0 2px #1b487e,inset 0 0 7px #060b18}
+.arena-team.red .arena-avatar{background:radial-gradient(circle at 40% 34%,#965456,#351626)}
+.arena-avatar img{display:block;width:100%;height:110%;object-fit:contain;object-position:center bottom}
+.arena-team .arena-team-info{min-width:0;flex:1}
+.arena-team strong{display:block;font-size:clamp(14px,1.5vw,20px);line-height:1.2;color:#f5f6fa;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.arena-team small{display:block;color:#bfdafa;font-size:.72rem;font-weight:750;margin-top:4px;white-space:nowrap}
+.arena-team.red small{color:#ffc4bb}
+.arena-team .arena-lives{color:#ffe2a0;font-size:.75rem;font-weight:850;letter-spacing:.025em}
+.arena-versus{text-align:center;white-space:nowrap;align-self:center}
+.arena-versus .shield{display:grid;place-items:center;width:49px;height:49px;border:2px solid #eec06a;border-radius:13px 13px 17px 17px;transform:rotate(3deg);background:linear-gradient(155deg,#284168,#12172a);box-shadow:inset 0 0 0 2px #3b2618,0 6px 9px #0006;color:#ffda83;font-weight:1000;font-family:Georgia,serif;font-size:20px}
+.arena-versus small{display:block;font-weight:800;color:#eac581;font-size:.68rem;margin-top:5px}
+body.arena-active .board-shell{border:0;background:transparent!important;padding:0;box-shadow:none;overflow:visible;max-width:740px;margin:auto}
+body.arena-active .board.character-view{width:100%;filter:drop-shadow(0 13px 16px #080c17a1)}
+body.arena-active .board-legend{display:none}
+body.arena-active .arena-footer{max-width:740px;margin:-1px auto 0;display:flex;flex-direction:column;gap:11px}
+.arena-prompt{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:11px;align-items:center;padding:10px 13px;min-height:71px;border:1.5px solid #526482;border-radius:17px;background:linear-gradient(135deg,#19263e,#152138);box-shadow:inset 0 1px 0 #ffffff12,0 5px 10px #0208174a}
+.arena-prompt .arena-portrait{display:grid;place-items:center;width:49px;height:49px;border-radius:13px;background:radial-gradient(circle,#27558b,#101d34);border:1px solid #7c94b2;overflow:hidden}
+.arena-portrait img{width:100%;height:110%;object-fit:contain;object-position:center bottom}
+.arena-prompt .arena-prompt-main{min-width:0}
+.arena-prompt h3{font-size:.93rem;color:#f5f6ff;letter-spacing:-.01em;margin:0 0 3px;font-weight:900}
+.arena-prompt #selectionText{padding:0;min-height:0;font-size:.74rem;line-height:1.3;color:#d5dded;overflow-wrap:anywhere}
+.arena-prompt .arena-target-count{display:flex;flex-direction:column;align-items:center;justify-content:center;padding-left:10px;border-left:1px solid #4d5a73;color:#dfe7f8;min-width:55px;gap:3px;font-size:.66rem;text-align:center}
+.arena-target-count .arena-count{font-size:1.12rem;color:#edfa9e;font-weight:950}
+.arena-target-count .arena-dot{width:9px;height:9px;background:#d0fb65;border-radius:50%;box-shadow:0 0 8px #d7ff77,0 0 14px #a9ff2d}
+body.arena-active .arena-footer .action-stack{display:grid;grid-template-columns:54px minmax(0,1fr) 54px;gap:10px;align-items:stretch}
+body.arena-active .arena-footer .tiny-actions{display:contents}
+body.arena-active .arena-footer #changeButton{grid-column:1;grid-row:1;display:grid;place-items:center;width:100%;padding:0;font-size:0;height:55px;color:#ffd87f!important;background:linear-gradient(150deg,#263958,#18253a);border:2px solid #e6a84f;border-radius:14px;box-shadow:0 3px 0 #714b25}
+body.arena-active .arena-footer #changeButton::before{content:'↶';font-size:30px;font-weight:950}
+body.arena-active .arena-footer #lockButton,body.arena-active .arena-footer #revealButton{grid-column:2;grid-row:1;height:55px;min-height:55px;background:linear-gradient(#ffdc79,#f0a934);border:2px solid #ffde85;border-radius:16px;box-shadow:inset 0 2px 0 #fff6ba96,0 4px 0 #a36c24,0 7px 15px #0007;color:#2d211e;font-size:1.07rem;line-height:1.1;font-weight:1000;padding:8px 10px}
+body.arena-active .arena-footer #revealButton{background:linear-gradient(#c9fdc3,#67cf9e);border-color:#d6f9b8;box-shadow:0 4px 0 #30885f,0 7px 15px #0005}
+body.arena-active .arena-footer #passButton{grid-column:3;grid-row:1;display:grid;place-items:center;width:100%;height:55px;padding:0;font-size:0;color:#ffd87f;background:linear-gradient(150deg,#263958,#18253a);border:2px solid #e6a84f;border-radius:14px;box-shadow:0 3px 0 #714b25}
+body.arena-active .arena-footer #passButton::before{content:'⏭';font-size:22px}
+body.arena-active .arena-footer .arena-waiting{grid-column:2;grid-row:1;display:none;align-items:center;justify-content:center;padding:8px;text-align:center;background:#223248;border:1px solid #527a96;border-radius:14px;color:#bce8f4;font-size:.86rem;font-weight:750}
+body.arena-active .arena-footer.waiting .arena-waiting{display:flex}
+body.arena-active .arena-footer .arena-button-key{font-size:.72rem;text-align:center;color:#a7b9d3;line-height:1.3;margin-top:-4px}
+body.arena-active .game-layout .side>.controls{display:none}
+body.arena-active .game-layout .side .panel{background:#1b2a43;border-color:#405679;box-shadow:inset 0 1px 0 #ffffff10}
+body.arena-active .game-layout .side h2{color:#efd49d}
+body.arena-active .footer-note{color:#8dabc8}
+/* Target markers and selected-square highlights stay aligned to the board's real quadrilaterals. */
+.board.character-view .arena-move-markers{position:absolute;inset:0;pointer-events:none;z-index:24}
+.board.character-view .arena-move-dot{position:absolute;width:2.05%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:#e1ff7e;box-shadow:0 0 8px 3px #ceff6b9f,0 0 0 3px #57771a70}
+.board.character-view .arena-move-dot.capture{width:5.2%;background:transparent;border:3px solid #fbe48c;box-shadow:0 0 10px 3px #ff4144aa,inset 0 0 5px #ff4f4f88}
+body.arena-active .board.character-view .char-square.possible{background:rgba(205,244,85,.16)}
+body.arena-active .board.character-view .char-square.can-capture{background:rgba(255,112,72,.27)}
+body.arena-active .board.character-view .char-square.selected{background:rgba(255,194,52,.36)}
+body.arena-active .board.character-view .char-sprite.selected{filter:drop-shadow(0 0 7px #ffe765) drop-shadow(0 0 8px #edb224) drop-shadow(0 4px 4px #181313)}
+@media(max-width:780px){
+ body.arena-active #game .game-layout{grid-template-columns:minmax(0,1fr);gap:15px}
+ body.arena-active .container{width:min(100% - 16px,620px)}
+ body.arena-active .top{height:134px}
+ body.arena-active .top-actions{padding-top:38px}
+ body.arena-active .arena-title{width:min(410px,calc(100% - 138px))}
+ body.arena-active .game-layout .side{display:flex;gap:11px}
+}
+@media(max-width:480px){
+ body.arena-active .container{width:calc(100% - 12px)}
+ body.arena-active .top{height:113px;padding:2px 0 4px}
+ body.arena-active .arena-title{width:calc(100% - 121px);max-height:93px}
+ body.arena-active .top-actions{padding-top:23px;gap:4px}
+ body.arena-active .top-actions .pill-btn{min-width:39px;height:40px;border-radius:12px;padding:0 6px}
+ body.arena-active .top-actions .pill-btn::before{font-size:20px}
+ body.arena-active #characterViewToggle::before{font-size:11px}
+ body.arena-active .arena-matchbar{gap:5px;margin:0 3px 1px}
+ .arena-matchbar .arena-team{padding:5px 6px;gap:5px;min-height:61px;border-radius:12px}
+ .arena-team .arena-avatar{width:39px;height:39px;flex-basis:39px}
+ .arena-team strong{font-size:clamp(12px,3.6vw,15px)}
+ .arena-team small{font-size:.61rem;line-height:1.1}
+ .arena-versus .shield{width:34px;height:34px;font-size:15px;border-radius:9px}
+ .arena-versus small{font-size:.6rem;margin-top:2px}
+ .arena-prompt{grid-template-columns:39px minmax(0,1fr) 49px;gap:6px;padding:6px 8px;min-height:58px;border-radius:13px}
+ .arena-prompt .arena-portrait{width:38px;height:38px}
+ .arena-prompt h3{font-size:.83rem}
+ .arena-prompt #selectionText{font-size:.69rem;max-height:31px;overflow:hidden}
+ .arena-prompt .arena-target-count{min-width:44px;padding-left:5px;font-size:.6rem}
+ .arena-target-count .arena-count{font-size:1rem}
+ body.arena-active .arena-footer{gap:8px}
+ body.arena-active .arena-footer .action-stack{grid-template-columns:48px minmax(0,1fr) 48px;gap:8px}
+ body.arena-active .arena-footer #changeButton,body.arena-active .arena-footer #passButton{height:51px}
+ body.arena-active .arena-footer #lockButton,body.arena-active .arena-footer #revealButton{height:51px;min-height:51px;font-size:.93rem;padding:6px 4px}
+ body.arena-active .arena-footer .arena-button-key{font-size:.66rem}
+ .board.character-view .arena-move-dot{width:2.6%}
+}
+@media(max-width:355px){
+ body.arena-active .top{height:102px}
+ body.arena-active .arena-title{width:calc(100% - 107px)}
+ body.arena-active .top-actions .pill-btn{min-width:35px;height:37px}
+ .arena-team .arena-avatar{width:33px;height:33px;flex-basis:33px}
+ .arena-team small{font-size:.56rem}
+ .arena-matchbar .arena-team{padding:4px}
+ .arena-versus .shield{width:28px;height:28px;font-size:13px}
+ body.arena-active .arena-footer .action-stack{grid-template-columns:44px minmax(0,1fr) 44px}
+}
+/* Keep the mockup's generous title silhouette without colliding with real controls. */
+@media(max-width:480px){
+ body.arena-active .top{height:135px}
+ body.arena-active .top-actions{padding-top:8px}
+ body.arena-active .arena-title{width:min(335px,84%);max-height:111px;margin-top:36px}
+ body.arena-active .top-actions #characterViewToggle{font-size:0!important}
+ body.arena-active .top-actions #characterViewToggle::before{font-size:12px}
+ body.arena-active .arena-footer #lockButton:disabled{opacity:.74}
+}
+@media(max-width:355px){body.arena-active .top{height:120px}body.arena-active .arena-title{margin-top:32px;max-height:87px}}
+/* Final small-screen typography and logo clearance. */
+body.arena-active .arena-title{-webkit-mask-image:radial-gradient(ellipse 74% 74% at 50% 50%,#000 56%,transparent 99%);mask-image:radial-gradient(ellipse 74% 74% at 50% 50%,#000 56%,transparent 99%)}
+@media (min-width:356px) and (max-width:480px){body.arena-active .top{height:160px}body.arena-active .arena-title{margin-top:46px;max-height:100px}}
+@media(max-width:355px){body.arena-active .top{height:137px}body.arena-active .arena-title{margin-top:41px;max-height:81px}}
