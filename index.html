@@ -163,7 +163,7 @@ function resolveRound(board,wMove,bMove){
   for(const ent of active){const {r,c}=ent.move.to;const victim=updated[r][c];if(victim&&victim.side!==ent.side){captures.push({victim,by:ent.side});updated[r][c]=null}}
   for(const ent of active){const {r,c}=ent.move.to;let moved=ent.piece;if(ent.move.promotion)moved={...moved,type:ent.move.promotion};updated[r][c]=moved}
  }
- for(const x of captures){if(x.victim?.life){const who=x.victim.side==='W'?'Blue':'Red';events.push(`${who} lost a starting rook${x.victim.life==='crown'?' (the king-rook)':''}!`)}}
+ for(const x of captures){if(x.victim?.life){const lost=x.victim.side==='W'?'Blue':'Red';const capturedBy=x.by==='W'?'Blue':x.by==='B'?'Red':null;const detail=x.victim.life==='crown'?' (the king-rook)':'';events.push(capturedBy?`👍 ${capturedBy} captured ${lost}’s starting rook${detail}! ☠️ ${lost} lost a rook.`:`☠️ ${lost} lost a starting rook${detail}!`)}}
  const wAlive=alive(updated,'W').size,bAlive=alive(updated,'B').size;
  let outcome=null;
  if(wAlive===0&&bAlive===0)outcome='draw';else if(wAlive===0)outcome='B';else if(bAlive===0)outcome='W';
