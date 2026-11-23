@@ -124,7 +124,12 @@
   applied=id;document.body.dataset.pieceStyle=id;
   try{localStorage.setItem('trc-piece-style-v1',id)}catch(_){}
   setCardStates();homeStatus.textContent=STYLES.find(s=>s.id===id).name+' selected';
-  if(game.stage!=='menu')render();
+  // Explicitly choosing a 3D set should display it, even if Classic was used previously.
+  const classic=window.TripleRookCharacterCrew?.getView?.()==='classic';
+  if(classic){
+   try{localStorage.setItem('trc-art-view','character')}catch(_){}
+   window.TripleRookCharacterCrew.setView('character'); // triggers a render if a game is active
+  } else if(game.stage!=='menu')render();
  }
  function openPicker(){
   pending=applied;originFocus=document.activeElement;
