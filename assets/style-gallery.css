@@ -1,0 +1,130 @@
+/* Triple Rook Chess · four-set gallery — presentation only, never game logic. */
+:root{--style-gold:#f4c568;--style-edge:#7b92af;--style-ink:#f9f5eb}
+body{overflow-x:hidden}
+/* Home / start screen */
+body:not(.arena-active) .top{min-height:154px;padding:10px 32px 5px}
+body:not(.arena-active) .arena-title{width:min(465px,100%);max-height:145px}
+body:not(.arena-active) .top-actions{top:13px;right:1px}
+body:not(.arena-active) .menu{max-width:1030px;margin:0 auto 64px}
+body:not(.arena-active) .style-home-menu .hero{text-align:center;max-width:780px;margin:0 auto;padding:3px 10px 22px}
+.style-home-menu .hero .eyebrow{font-size:.73rem;letter-spacing:.29em;color:#f5c875;margin-bottom:10px}
+.style-home-menu .hero h1{font-size:clamp(2.15rem,4.8vw,3.45rem);line-height:1.06;letter-spacing:-.05em;margin:0 auto 11px;text-wrap:balance}
+.style-home-menu .hero h1 em{color:#ffcb70}
+.style-home-menu .hero p{color:#ccd6e7;font-size:clamp(.84rem,1.3vw,1.02rem);line-height:1.5;margin:0 auto;max-width:590px;text-wrap:pretty}
+.style-home-menu .mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.style-home-menu .mode{position:relative;display:flex;flex-direction:column;align-items:center;min-height:234px;padding:19px 21px 17px;gap:6px;border:1.5px solid #6b7490;border-radius:23px;text-align:center;overflow:hidden;background:radial-gradient(ellipse 105% 70% at 50% 15%,#32476a 0,transparent 75%),linear-gradient(150deg,#273c5d,#15233b 85%);box-shadow:inset 0 1px 0 #ffffff28,0 8px 28px #03091c61;transition:transform .17s ease,border-color .17s ease,box-shadow .17s ease}
+.style-home-menu .mode:hover{transform:translateY(-2px);border-color:#efc36e;box-shadow:0 0 0 1px #f7ca7350,0 10px 24px #0207108c}
+.style-home-menu .mode:focus-visible{outline:3px solid #fff4b3;outline-offset:2px}
+.style-home-menu .mode .emblem{font-size:2.65rem;margin:0 0 2px;filter:drop-shadow(0 5px 6px #03081770)}
+.style-home-menu .mode h2{margin:0;font-size:clamp(1.06rem,2.6vw,1.36rem);font-weight:900;letter-spacing:-.025em}
+.style-home-menu .mode p{grid-column:auto;margin:0 auto;color:#cbd6e9;font-size:.8rem;line-height:1.35;max-width:310px;flex:1}
+.style-home-menu .mode .home-play{display:flex;justify-content:center;align-items:center;gap:9px;width:100%;min-height:44px;border-radius:13px;margin-top:5px;border:1.5px solid #ffdc84;background:linear-gradient(180deg,#ffe18b 0%,#f3ae3c 100%);color:#232138;font-size:.88rem;font-weight:950;box-shadow:inset 0 2px 0 #fffaca70,0 3px 0 #9c602c}
+.style-home-menu .mode .home-play .chevron{font-size:1.3rem;font-weight:950}
+.style-home-menu .mini-rules{margin-top:17px;border:1px solid #314562;background:#101e35;gap:8px;padding:13px 14px;border-radius:16px}
+.style-home-menu .rule-chip{font-size:.74rem;justify-content:center}
+/* Four-choice style strip. No hidden 5th, 6th or 7th styles. */
+.style-divider{display:flex;justify-content:center;align-items:center;gap:17px;margin:24px auto 15px;max-width:760px;color:#ffd07c}
+.style-divider::before,.style-divider::after{content:'';height:1px;flex:1;background:linear-gradient(90deg,transparent,#c59451)}
+.style-divider::after{transform:rotate(180deg)}
+.style-shelf{background:linear-gradient(160deg,#253b60 0%,#172944 68%,#172941 100%);border:1.5px solid #597290;border-radius:22px;padding:18px;box-shadow:inset 0 2px 1px #ffffff18,0 12px 30px #01091670;margin-top:0}
+.style-shelf-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.style-shelf-title{font-size:clamp(1.17rem,2.6vw,1.55rem);font-weight:920;color:#f5f3ec;letter-spacing:-.035em;margin:0}
+.style-explore{flex:0 0 auto;border-radius:50px;border:1px solid #d9a753;background:#1b2b45;color:#f7d494;font-size:.72rem;font-weight:850;padding:8px 13px;min-height:41px}
+.style-explore:focus-visible{outline:2px solid #ffd991;outline-offset:2px}
+.style-choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.style-card{position:relative;border:1.5px solid #7386a4;border-radius:15px;padding:6px;min-width:0;background:linear-gradient(145deg,#203b60,#142238);text-align:left;color:#fff;transition:border-color .15s,box-shadow .15s,transform .15s;overflow:hidden}
+.style-card:hover{transform:translateY(-2px);border-color:#ffe2ac}
+.style-card[aria-pressed="true"]{border-color:#ffd68b;box-shadow:0 0 0 2px #e9b04f,0 0 18px #ffb93b8c;background:linear-gradient(145deg,#2e3f60,#202b41)}
+.style-card:focus-visible{outline:3px solid white;outline-offset:2px}
+.style-card img{display:block;width:100%;height:105px;object-fit:cover;object-position:center;border-radius:10px;background:#182338}
+.style-card .style-label{display:block;text-align:center;padding:8px 2px 4px;font-weight:850;font-size:clamp(.73rem,1.75vw,.93rem);letter-spacing:-.025em;line-height:1.15;white-space:nowrap}
+.style-card .style-check{position:absolute;right:7px;top:6px;width:25px;height:25px;display:grid;place-items:center;border:2px solid #ffe4a5;border-radius:50%;font-weight:900;font-size:15px;background:linear-gradient(#ffdf7b,#e7a439);color:#192239;box-shadow:0 2px 8px #070e23;opacity:0;transform:scale(.85);transition:opacity .12s,transform .12s;pointer-events:none}
+.style-card[aria-pressed="true"] .style-check{opacity:1;transform:scale(1)}
+.style-note{font-size:.75rem;line-height:1.35;color:#c6d3e3;text-align:center;margin:14px 0 1px}
+.style-status{text-align:center;font-size:.72rem;font-weight:800;color:#f1ce86;margin-top:9px;min-height:15px}
+/* The gallery is a real accessible overlay, with scrollable content and a sticky action row. */
+.style-overlay[hidden]{display:none!important}
+.style-overlay{position:fixed;z-index:95;inset:0;background:#060d1de3;display:grid;place-items:center;padding:max(env(safe-area-inset-top,0px),10px) 10px max(env(safe-area-inset-bottom,0px),10px);backdrop-filter:blur(10px)}
+.style-dialog{width:min(560px,100%);max-height:min(96dvh,900px);display:flex;flex-direction:column;overflow:hidden;border:1.5px solid #6984a9;border-radius:23px;background:linear-gradient(160deg,#1f3453,#0e1b31 90%);box-shadow:0 20px 75px #000b;color:#f6f5f0}
+.style-dialog-head{padding:17px 18px 9px;display:flex;align-items:start;justify-content:space-between;gap:12px;flex:0 0 auto}
+.style-dialog-head h2{font-size:1.35rem;margin:0 0 3px;letter-spacing:-.04em;line-height:1.1}
+.style-dialog-head p{color:#bfcee4;font-size:.77rem;line-height:1.32;margin:0}
+.style-close{display:grid;place-items:center;flex:0 0 43px;width:43px;height:43px;border:1px solid #9bafc6;border-radius:13px;background:#243c5c;color:white;font-size:27px}
+.style-scroll{padding:2px 18px 16px;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+.style-preview-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:4px 0 8px}
+.style-preview-top strong{font-size:.95rem;color:#ffda90}
+.style-preview-top span{font-size:.7rem;color:#ccd8e5}
+.style-preview-stage{max-width:420px;margin:0 auto 12px;position:relative;aspect-ratio:1200/1120;background:url('./board-2.5d.webp') center/100% 100% no-repeat;filter:drop-shadow(0 4px 9px #0008)}
+.style-preview-stage img{position:absolute;height:auto;transform:translate(-50%,-95%);pointer-events:none;filter:drop-shadow(0 2px 3px #08080977)}
+.style-popup-title{margin:10px 0 8px;color:#eff4fe;font-weight:870;font-size:.82rem}
+.style-popup-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.style-popup-grid .style-card img{height:99px}
+.style-popup-grid .style-card .style-label{font-size:.85rem}
+.style-dialog-foot{flex:0 0 auto;padding:12px 16px max(env(safe-area-inset-bottom,0px),13px);border-top:1px solid #536d8b;background:#152845;display:flex;gap:9px;align-items:center}
+.style-dialog-foot button{min-height:49px;border-radius:13px;font-size:.85rem;font-weight:900}
+.style-cancel{flex:0 0 33%;border:1.5px solid #d3b16f;background:#1f334f;color:#f6f0e5}
+.style-use{flex:1;border:1.5px solid #ffdf90;background:linear-gradient(180deg,#ffe58d,#eeb044);box-shadow:inset 0 2px 0 #fff8c0a6,0 3px 0 #936025;color:#27202c}
+body.style-modal-open{overflow:hidden}
+/* Scoped game art size: visual only. Original square tap geometry and board remain unchanged. */
+body[data-piece-style="neo-arena"] .board.character-view .char-sprite{filter:drop-shadow(0 3px 3px #102c4d9c)}
+body[data-piece-style="mythic-quest"] .board.character-view .char-sprite{filter:drop-shadow(0 3px 3px #21120c9c)}
+body[data-piece-style="atelier-modern"] .board.character-view .char-sprite{filter:drop-shadow(0 3px 3px #1510159c)}
+body .board.character-view .char-sprite.selected{filter:drop-shadow(0 0 7px #ffd978) drop-shadow(0 4px 2px #000a)!important}
+@media(max-width:700px){
+ body:not(.arena-active) .top{min-height:150px}
+ .style-home-menu .mode-grid{gap:11px}
+ .style-home-menu .mode{min-height:218px;padding:14px}
+ .style-home-menu .mode p{font-size:.76rem}
+ .style-home-menu .mini-rules{grid-template-columns:1fr;gap:6px}
+ .style-home-menu .rule-chip{justify-content:start}
+ .style-choices{display:grid;grid-auto-flow:column;grid-auto-columns:147px;grid-template-columns:none;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scroll-padding:5px;padding:4px 4px 10px;margin:0 -4px;scrollbar-width:thin;scrollbar-color:#9aabbb transparent}
+ .style-choices .style-card{scroll-snap-align:start}
+ .style-card img{height:105px}
+}
+@media(max-width:480px){
+ body:not(.arena-active) .container{width:calc(100% - 24px)}
+ body:not(.arena-active) .top{min-height:132px;padding:9px 40px 0}
+ body:not(.arena-active) .arena-title{width:min(325px,100%);max-height:127px}
+ body:not(.arena-active) .top-actions{top:4px;right:0}
+ .style-home-menu .hero{padding:2px 4px 16px}
+ .style-home-menu .hero .eyebrow{font-size:.63rem;letter-spacing:.24em;margin-bottom:8px}
+ .style-home-menu .hero h1{font-size:clamp(1.95rem,9vw,2.65rem);line-height:1.02;margin:0 0 10px}
+ .style-home-menu .hero p{font-size:.81rem;line-height:1.42}
+ .style-home-menu .mode-grid{grid-template-columns:1fr;gap:10px}
+ .style-home-menu .mode{min-height:111px;display:grid;grid-template-columns:64px minmax(0,1fr) auto;grid-template-rows:auto auto;align-items:center;gap:2px 11px;text-align:left;padding:13px 13px 12px;border-radius:17px}
+ .style-home-menu .mode .emblem{grid-area:1/1/3/2;font-size:2.45rem;margin:0;text-align:center}
+ .style-home-menu .mode h2{grid-area:1/2/2/4;font-size:1.1rem;line-height:1.1;margin:0}
+ .style-home-menu .mode p{grid-area:2/2/3/3;text-align:left;font-size:.74rem;line-height:1.36;margin:0;max-width:230px;align-self:start}
+ .style-home-menu .mode .home-play{grid-area:2/3/3/4;min-width:61px;width:auto;font-size:.69rem;padding:8px 8px;min-height:43px;align-self:end;text-align:center;gap:4px;margin:0}
+ .style-home-menu .mode .home-play .chevron{font-size:1rem}
+ .style-divider{margin:19px auto 12px}
+ .style-shelf{padding:14px 12px;border-radius:18px}
+ .style-shelf-title{font-size:1.18rem}
+ .style-explore{font-size:.68rem;min-height:40px;padding:6px 10px}
+ .style-choices{grid-auto-columns:142px;gap:10px}
+ .style-card img{height:103px}
+ .style-card .style-label{font-size:.8rem}
+ .style-note{font-size:.73rem}
+ .style-dialog{border-radius:19px;max-height:calc(100dvh - 14px)}
+ .style-dialog-head{padding:15px 14px 9px}
+ .style-dialog-head h2{font-size:1.2rem}
+ .style-scroll{padding:0 13px 12px}
+ .style-popup-grid{gap:8px}
+ .style-popup-grid .style-card img{height:74px}
+ .style-dialog-foot{padding:10px 12px max(env(safe-area-inset-bottom,0px),10px)}
+ .style-dialog-foot button{font-size:.82rem}
+}
+@media(max-width:355px){
+ .style-home-menu .mode{grid-template-columns:47px minmax(0,1fr) 57px;gap:2px 7px}
+ .style-home-menu .mode .emblem{font-size:2rem}
+ .style-home-menu .mode p{font-size:.67rem}
+ .style-home-menu .mode .home-play{font-size:.62rem}
+ .style-shelf-title{font-size:1.05rem}
+ .style-choices{grid-auto-columns:132px}
+}
+@media(prefers-reduced-motion:reduce){.style-card,.style-home-menu .mode,.style-card .style-check{transition:none}}
+/* Four choices are few enough to make every option discoverable on a phone. */
+@media(max-width:480px){
+ .style-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-columns:auto;grid-auto-flow:row;gap:10px;overflow:visible;scroll-snap-type:none;scroll-padding:0;padding:2px;margin:0}
+ .style-choices .style-card{scroll-snap-align:none}
+}
