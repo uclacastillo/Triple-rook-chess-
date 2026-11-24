@@ -38,3 +38,17 @@ Rooms expire after seven days. Both moves and all round history are saved in Dur
 - Run a real **two-phone test across Wi-Fi and cellular** before enabling this for all players.
 - Workers Free has quotas. Check current limits in Cloudflare's [Durable Objects pricing documentation](https://developers.cloudflare.com/durable-objects/platform/pricing/).
 - For staging, configure the exact Vercel preview origin in `FRONTEND_ORIGIN`. Restrict origins; do not use arbitrary wildcard CORS.
+
+## Connected Cloudflare test deployment (November 24, 2026)
+
+The Cloudflare account is now connected and the private game-room service is deployed at:
+
+- **Worker URL:** `https://triple-rook-multiplayer.triple-rook-noah-495a.workers.dev`
+- **Health endpoint:** `https://triple-rook-multiplayer.triple-rook-noah-495a.workers.dev/v1/health`
+- **Durable Object class:** `GameRoom` (SQLite-backed; created by declarative `exports`)
+- **Allowed browser origins:** `https://triple-rook-chess.vercel.app` and `https://triple-rook-chess-git-featur-1d2455-uclacastillo-2485s-projects.vercel.app`
+- **Frontend configuration:** `assets/multiplayer-config.js` on branch `feature/reliable-multiplayer` points at the Worker URL.
+
+The Worker URL is public, but private room state requires the correct Blue or Red session token. Never commit those tokens. The stable feature-branch Vercel alias is included in CORS; per-deployment preview URLs may differ and won't be allowed unless you add them explicitly.
+
+**Release gate:** Verify a complete online game on two real devices (including a disconnect/reconnect) before merging `feature/reliable-multiplayer` into `main`.
