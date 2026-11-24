@@ -31,6 +31,7 @@
   <link rel="stylesheet" href="assets/character-crew.css">
 <link rel="stylesheet" href="assets/arena-ui.css">
 <link rel="stylesheet" href="assets/style-gallery.css">
+<link rel="stylesheet" href="assets/reliable-multiplayer.css">
 </head>
 <body>
 <div class="container">
@@ -75,7 +76,7 @@
 <div class="veil" id="promotionDialog" hidden role="dialog" aria-modal="true" aria-labelledby="promoTitle"><div class="dialog"><div class="big">♙</div><h2 id="promoTitle">Promote your pawn</h2><p>Choose a new piece. A promoted rook does not add a new life.</p><div id="promotionChoices" class="promotions"></div><button class="btn secondary" id="cancelPromotion">Cancel</button></div></div>
 <div class="veil" id="winnerDialog" hidden role="dialog" aria-modal="true" aria-labelledby="winnerTitle"><div class="dialog"><div class="big" id="winIcon">🏆</div><h2 id="winnerTitle">Blue wins!</h2><p id="winnerDetail">All three starting rooks are gone.</p><button class="btn" id="againButton">Play again</button><button class="btn secondary" id="winnerMenuButton">Choose a different mode</button></div></div>
 <div class="veil" id="rulesDialog" hidden role="dialog" aria-modal="true" aria-labelledby="rulesTitle"><div class="dialog rules"><div class="eyebrow">The official game rules (first version)</div><h2 id="rulesTitle">How Triple Rook Chess works</h2><ol><li>Start with a normal 8×8 chessboard and all the usual pieces.</li><li>The <b>king is the third rook</b>: it moves any number of squares horizontally or vertically, like a rook. The other two rooks also move normally.</li><li>There is <b>no check or checkmate</b>. The king may be captured like any other piece, and that only removes one of your three lives.</li><li>Both players secretly select one legal move from the <b>same starting position</b>. Then both moves happen at once. You can also pass.</li><li>If both pieces move onto <b>the same destination square</b>, both are removed. If they <b>try to capture each other by swapping squares</b>, both are also removed. Otherwise, a piece that moves away from an attacked square escapes.</li><li>The player who loses all three <b>original rooks</b> (the king-rook and two normal rooks) loses. If both players lose their last rook together, it’s a draw.</li><li>Pawns can promote, but promoted rooks do not create extra lives. Castling and en passant are not used. Three rounds of both players passing results in a draw.</li></ol><button class="btn close" id="closeRules">Got it!</button></div></div>
-<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<!-- Online games now use authenticated Cloudflare game rooms. -->
 <script>
 'use strict';
 // Each side has exactly three ORIGINAL rook lives. Promoted rooks never gain a life ID.
@@ -319,7 +320,7 @@ $('handoffReady').onclick=()=>{show('handoff',false);render()};
 $('cancelPromotion').onclick=()=>show('promotionDialog',false);
 $('rulesButton').onclick=()=>show('rulesDialog',true);$('closeRules').onclick=()=>show('rulesDialog',false);
 $('againButton').onclick=()=>startGame(game.mode);$('winnerMenuButton').onclick=home;
-const joinId=new URLSearchParams(location.search).get('join');if(joinId)joinOnlineGame(joinId);
+// Online room invitations are handled by the reliable multiplayer client below.
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('rulesDialog').hidden)show('rulesDialog',false);else if(!$('promotionDialog').hidden)show('promotionDialog',false);else if(game.stage==='white'||game.stage==='black'){game.selected=null;game.choices=[];game.pending=null;render()}}});
 // Expose rule-engine helpers for automated verification; normal play does not use these references.
 window.TripleRookEngine={initialBoard,movesFor,allMoves,alive,resolveRound,makePiece};
@@ -327,5 +328,7 @@ window.TripleRookEngine={initialBoard,movesFor,allMoves,alive,resolveRound,makeP
   <script src="assets/character-crew.js"></script>
 <script src="assets/arena-ui.js"></script>
 <script src="assets/style-gallery.js"></script>
+<script src="assets/multiplayer-config.js"></script>
+<script src="assets/reliable-multiplayer.js"></script>
 </body>
 </html>
