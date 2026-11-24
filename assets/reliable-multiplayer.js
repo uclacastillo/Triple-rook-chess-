@@ -16,7 +16,8 @@
   const existingMenu=document.querySelector('#menu');
   const status=document.createElement('div');status.className='room-connection';status.hidden=true;status.setAttribute('aria-live','polite');
   status.innerHTML='<span class="room-state-icon" aria-hidden="true">●</span><span class="room-state-text"></span><button type="button" class="room-share" hidden>Copy invite</button><button type="button" class="room-retry" hidden>Retry</button>';
-  qs('board')?.parentElement?.parentElement?.insertAdjacentElement('afterend',status);
+  const boardArea=qs('board')?.closest('.board-area');
+  if(boardArea)boardArea.insertBefore(status,boardArea.querySelector('.arena-footer'));
   const statusText=status.querySelector('.room-state-text');
   const retry=status.querySelector('.room-retry'),share=status.querySelector('.room-share');
   const inline=document.createElement('div');inline.className='room-menu-message';inline.hidden=true;inline.setAttribute('role','status');
