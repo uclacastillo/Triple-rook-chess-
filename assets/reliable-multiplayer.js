@@ -11,7 +11,7 @@
   const originalLock=lock;
   const originalHome=home;
   const originalRender=render;
-  let session=null, snapshot=null, generation=0, pending=false, timer=null, failures=0;
+  let session=null, snapshot=null, invitationUrl=null, generation=0, pending=false, timer=null, failures=0;
   let internet='idle', lastError='';
   const existingMenu=document.querySelector('#menu');
   const status=document.createElement('div');status.className='room-connection';status.hidden=true;status.setAttribute('aria-live','polite');
@@ -29,10 +29,11 @@
   function readSession(id){try{return localStorage.getItem('trc-room:'+id)}catch(e){return null}}
   function saveInvite(id,url){try{sessionStorage.setItem('trc-invite:'+id,url)}catch(e){}}
   function readInvite(id){try{return sessionStorage.getItem('trc-invite:'+id)}catch(e){return null}}
+  function currentInvite(){return session?.role==='host' ? (invitationUrl||readInvite(session.id)) : null}
   function displayError(message,allowRetry=true){inline.hidden=false;inlineText.textContent=message;inlineRetry.hidden=!allowRetry;}
   function clearError(){inline.hidden=true;inlineText.textContent='';lastError='';}
   function stripRoomUrl(){if(location.search.includes('room=')){history.replaceState(null,'',location.pathname);}}
-  function stop(){generation++;clearTimeout(timer);timer=null;session=null;snapshot=null;pending=false;failures=0;internet='idle';status.hidden=true;retry.hidden=true;share.hidden=true;}
+  function stop(){generation++;clearTimeout(timer);timer=null;session=null;snapshot=null;invitationUrl=null;pending=false;failures=0;internet='idle';status.hidden=true;retry.hidden=true;share.hidden=true;}
   function colorState(){status.dataset.state=internet;}
   function updateConnection(){
     if(!session || game.stage==='menu'){status.hidden=true;return;}
@@ -40,7 +41,8 @@
     const waitingForGuest=snapshot&&!snapshot.guestJoined;
     const myLock=snapshot?.myLocked;
     let message;
-    if(internet==='reconnecting')message='Connection interrupted. Your game is saved. Reconnecting…';
+    if(!snapshot)message='Connecting to your game room…';
+    else if(internet==='reconnecting')message='Connection interrupted. Your game is saved. Reconnecting…';
     else if(internet==='connecting')message='Connecting to the game room…';
     else if(waitingForGuest)message='Waiting for Red to join. Share the invitation to start.';
     else if(snapshot?.outcome)message='Game finished. All rounds have been saved.';
@@ -50,7 +52,7 @@
     if(lastError)message+=' '+lastError;
     statusText.textContent=message;colorState();
     retry.hidden=internet!=='reconnecting';
-    share.hidden=!(session.role==='host'&&readInvite(session.id));
+    share.hidden=!currentInvite();
     const pt=qs('arenaPromptTitle');
     if(pt&&game.stage==='waiting') {
       if(waitingForGuest)pt.textContent='Waiting for Red to join';
@@ -73,14 +75,14 @@
   }
   function showInvite(){
     if(!session)return;
-    const link=readInvite(session.id);if(!link)return;
+    const link=currentInvite();if(!link){lastError='Invitation unavailable. Create a new game link.';updateConnection();return false;}
     qs('handoffTitle').textContent='Invite your opponent';
     qs('handoffText').textContent='Send this link to the Red player. They can join from their own phone. The invitation is private.';
     qs('inviteLink').value=link;qs('handoffReady').textContent='Close';
-    qs('copyInvite').textContent='Copy game link';show('handoff',true);
+    qs('copyInvite').textContent='Copy game link';show('handoff',true);return true;
   }
   async function copyInvite(){
-    const link=readInvite(session?.id);if(!link)return;
+    const link=currentInvite();if(!link)return;
     try{await navigator.clipboard.writeText(link);share.textContent='Copied!';setTimeout(()=>{share.textContent='Copy invite'},1500);}catch{showInvite();}
   }
   function reportLatestRound(){
@@ -135,10 +137,12 @@
     if(gen===generation&&session)schedule(gen,failures?Math.min(15000,Math.pow(2,failures)*1600):document.hidden?9000:2500);
   }
   function activate(id,token,role,data){
+    // Rendering a new game triggers the UI's connection-status callback. Reset it
+    // BEFORE attaching a session; otherwise that callback reads an unset snapshot.
     stop();const gen=generation;
+    game.online=false;game.role=null;startGame('online');
     session={id,token,role};saveSession(id,token);
-    // Reset only when joining a new room; subsequent polls never reset live play.
-    startGame('online');game.online=true;game.role=role;game.stage='waiting';
+    game.online=true;game.role=role;game.stage='waiting';
     internet='connected';applyState(data,true);schedule(gen,2200);
   }
   async function createRoom(){
@@ -151,7 +155,9 @@
       const invitation=location.origin+location.pathname+'?room='+encodeURIComponent(roomId)+'#invite='+encodeURIComponent(inviteToken);
       saveInvite(roomId,invitation);
       history.replaceState(null,'',location.pathname+'?room='+encodeURIComponent(roomId));
-      activate(roomId,hostToken,'host',state);showInvite();
+      activate(roomId,hostToken,'host',state);
+      // The private invite must remain usable even if Safari disables sessionStorage.
+      invitationUrl=invitation;updateConnection();showInvite();
     }catch(e){internet='idle';displayError(e.message);}finally{pending=false;qs('friendButton').disabled=false;}
   }
   async function resumeOrJoin(){
@@ -164,6 +170,7 @@
       if(token){
         const state=await request('/v1/rooms/'+id+'/state','GET',null,token);
         activate(id,token,state.role,state);
+        if(state.role==='host'){invitationUrl=readInvite(id);updateConnection();}
       }else {
         const invite=new URLSearchParams(url.hash.slice(1)).get('invite');
         if(!invite){displayError('This game link does not include an invitation token. Ask for a new invitation.',false);return;}
@@ -200,7 +207,7 @@
   qs('lockButton').onclick=submitMove;
   qs('winnerMenuButton').onclick=leave;
   qs('againButton').onclick=()=>game.online?newOnlineMatch():startGame(game.mode);
-  share.onclick=copyInvite;retry.onclick=()=>{lastError='';poll(generation);};
+  share.textContent='Invite friend';share.onclick=showInvite;retry.onclick=()=>{lastError='';poll(generation);};
   inlineRetry.onclick=()=>resumeOrJoin();
   document.addEventListener('visibilitychange',()=>{if(!document.hidden&&session)poll(generation);});
   window.TripleRookReliableMultiplayer={getStatus:()=>({roomId:session?.id,role:session?.role,connected:internet,round:snapshot?.round}),retry:()=>poll(generation)};
