@@ -1,0 +1,19 @@
+/* Room state is accessible and does not replace the existing controls. */
+.room-connection{
+ display:flex;align-items:center;gap:9px;flex-wrap:wrap;min-height:46px;
+ border-radius:13px;border:1px solid #3c7aa4;padding:10px 12px;margin:8px 0 10px;
+ background:linear-gradient(120deg,#173353,#172239);color:#e4efff;font-size:.84rem;
+ box-shadow:0 4px 14px #050b1850;
+}
+.room-connection[hidden],.room-menu-message[hidden]{display:none!important}
+.room-state-icon{color:#77e9ba;font-size:1rem;filter:drop-shadow(0 0 5px #49ecae)}
+.room-connection[data-state="reconnecting"]{border-color:#e7a960;background:#352c30}
+.room-connection[data-state="reconnecting"] .room-state-icon{color:#ffce73;filter:none}
+.room-connection[data-state="connecting"] .room-state-icon{color:#b1d9ff;filter:none}
+.room-state-text{flex:1 1 190px;line-height:1.4}
+.room-connection button,.room-menu-message button{border:1px solid #e4b55c;color:#ffe4ad;background:#182e4b;
+ border-radius:10px;font-size:.78rem;font-weight:800;padding:9px 11px;min-height:35px;cursor:pointer}
+.room-menu-message{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 15px;
+ background:#263246;border:1px solid #dba864;border-radius:12px;margin:20px 0;color:#ffe5c0;line-height:1.4}
+.room-menu-message span{flex:1 1 200px}
+@media(max-width:420px){.room-connection{font-size:.74rem;margin:5px 2px 9px;padding:9px}.room-connection button{font-size:.72rem}}
